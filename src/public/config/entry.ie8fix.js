@@ -1,0 +1,10 @@
+require('../scripts/defineProperty');
+require('../scripts/object_create');
+require('../scripts/forEach');
+require('../scripts/array_indexOf');
+require('es6-promise').polyfill();
+require('console-polyfill');
+require('../scripts/map');
+require('../scripts/queryselector');
+require('html5shiv');
+require('fetch-IE8');

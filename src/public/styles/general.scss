@@ -1,0 +1,82 @@
+$max-height:1440px;
+$max-width:2560px;
+$min-width:800px;
+$min-height:600px;
+$font-family:"微软雅黑, Arial, Georgia, Consolas";
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    max-height: $max-height;
+    min-height: $min-height;
+    max-width: $max-width;
+    min-width: $min-width;
+    font-size: 1em;
+    font-family: $font-family;
+}
+
+.clear {
+    margin: 0!important;
+    padding: 0!important;
+    border: none!important;
+    height: 0!important;
+    width: 0!important;
+    clear: both;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.tl {
+    text-align: left;
+}
+
+.tr {
+    text-align: right;
+}
+
+.tc {
+    text-align: center;
+}
+
+.tj {
+    text-align: justify;
+}
+
+.ma {
+    margin: 0 auto;
+}
+
+.m0 {
+    margin: 0;
+}
+
+.p0 {
+    padding: 0;
+}
+
+.h100 {
+    height: 100%;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.pr {
+    position: relative;
+}
+
+.pa {
+    position: absolute;
+}
