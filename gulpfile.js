@@ -3,12 +3,13 @@ const gulp = require('gulp'), //本地安装gulp所用到的地方
     gulpLoadPlugins = require('gulp-load-plugins'),
     plugins = gulpLoadPlugins(),
     webpack = require('webpack'),
-    browserSync = require("browser-sync").create(),
     webpackDevMiddleware = require("webpack-dev-middleware"),
     webpackHotMiddleware = require("webpack-hot-middleware"),
     proxy = require('http-proxy-middleware'),
     del = require('del'),
     assign = require('./config/assign_object');
+
+let browserSync = require("browser-sync").create();
 
 const loadingConfig = () => {
     global.path = require('path'),
@@ -38,16 +39,16 @@ gulp.task('plugins', () => {
 
 gulp.task('dev', () => {
     process.env.NODE_ENV = 'developing';
-    const serverConfig = loadingConfig();
-    const webpackConfig = assign(serverConfig.devConfig, serverConfig.originalConfig);
-    const bundler = webpack(webpackConfig);
+    let serverConfig = loadingConfig();
+    let webpackConfig = assign(serverConfig.devConfig, serverConfig.originalConfig);
+    let bundler = webpack(webpackConfig);
     // const middlewareProxy = proxy('/clock2.0/', {
     //     "target": 'http://localhost:3000',
     //     "secure": false,
     //     "changeOrigin": true,
     // });
-    const middlewareProxy = proxy('/new_seat/', {
-        "target": 'http://localhost:8080',
+    const middlewareProxy = proxy('/new_member/', {
+        "target": 'http://10.11.3.206:8080',
         "secure": false,
         "changeOrigin": true,
     });
@@ -62,13 +63,14 @@ gulp.task('dev', () => {
         },
         online: false,
         port: 80,
-        ghostMode: false,
+        // ghostMode: false,
         open: false,
     });
+
 });
 
 gulp.task('reload', () => {
-    console.log("html reload");
+    console.log("browser reload");
 });
 
 gulp.task('build', ['clean'], () => {

@@ -16,7 +16,8 @@ const config = {
                             path: path.resolve(__dirname, "webpack", "postcss.config.js")
                         }
                     }
-                },"sass-loader"]
+                }, "sass-loader"],
+                publicPath: '../',
             })
         }],
     },

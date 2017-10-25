@@ -32,12 +32,21 @@ const touchFile = (name) => {
         scripts = path.resolve(workplace, 'scripts'),
         mainPage = path.resolve(pages, name + '.art'),
         entryConfigPath = path.resolve(config, 'entry.' + name + '.js'),
+        buildConfigPath = path.resolve(config, 'build.' + name + '.js'),
         pageConfigPath = path.resolve(config, 'page.' + name + '.js');
     fs.mkdir(config, (err) => {
         if (err) {
             console.log(err);
         }
         fs.open(entryConfigPath, 'w', newFileCallBack);
+        fs.open(buildConfigPath, 'w', (err, data) => {
+            if (err) {
+                console.log(err);
+            }
+            var pageConfig = `const pageConfig = {}
+                module.exports = pageConfig;`
+            fs.write(data, pageConfig, newFileCallBack);
+        });
         fs.open(pageConfigPath, 'w', (err, data) => {
             if (err) {
                 console.log(err);
@@ -92,6 +101,6 @@ const createNewPage = () => {
     });
 }
 
-(function() {
+(function () {
     createNewPage();
 })();

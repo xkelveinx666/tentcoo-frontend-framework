@@ -10,7 +10,9 @@ const config = {
             use: ['style-loader',
                 {
                     loader: 'css-loader',
-                    options: { importLoaders: 1 },
+                    options: {
+                        importLoaders: 1
+                    },
                 }, {
                     loader: 'postcss-loader',
                     options: {
@@ -19,7 +21,7 @@ const config = {
                         }
                     }
                 }, {
-                    loader:'sass-loader',
+                    loader: 'sass-loader',
                 }
             ],
         }],

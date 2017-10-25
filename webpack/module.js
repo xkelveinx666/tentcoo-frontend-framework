@@ -10,7 +10,7 @@ const rules = [{
     use: {
         loader: 'babel-loader',
         options: {
-            presets: ['es2015']
+            presets: ['env']
         }
     }
 }, {
@@ -18,9 +18,13 @@ const rules = [{
     use: {
         loader: 'url-loader',
         options: {
-            limit: 8192,
+            "limit": "256",
+            "name": "[name].[ext]",
+            "outputPath": "img/",
         },
     }
 }]
 
-module.exports = { "rules": rules };
+module.exports = {
+    "rules": rules
+};
