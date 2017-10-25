@@ -22,7 +22,7 @@ v1.1
 同时支持CSS使用SCSS,HTML使用art-template,JS使用ES6
 
 ## 兼容性
-已经确认常用兼容性到IE6
+已经确认常用兼容性到IE10+，准备写formdata的polufill以保证兼容性到IE8
 
 ## 特点
 ### JavaScript
