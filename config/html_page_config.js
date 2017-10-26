@@ -28,7 +28,7 @@ class HTMLPageConfig {
 const path = global.path || require('path'),
 common = global.common || require(path.resolve(__dirname, './common_config')),
 ${this.pageName} = {
-    "filepath": ${this.filePath},
+    "filePath": ${this.filePath},
     "title": "${this.title}",
     "icon": "${this.icon}",
     "description": "${this.description}",

@@ -20,14 +20,14 @@ const location = {
 }
 
 const publicPath = {
-    "pages": path.resolve(location.src, "public", "html"),
+    "pages": path.resolve(location.src, "public", "pages"),
     "scripts": path.resolve(location.src, "public", "scripts"),
     "styles": path.resolve(location.src, "public", "styles"),
     "config": path.resolve(location.src, "public", "config"),
 }
 
 const privatePath = {
-    "pages": path.resolve(location.src, "private", "pages"),
+    "pages": path.resolve(location.src, "private", "html"),
     "scripts": path.resolve(location.src, "private", "scripts"),
     "styles": path.resolve(location.src, "private", "styles"),
     "config": path.resolve(location.src, "private", "config"),

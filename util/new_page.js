@@ -49,7 +49,7 @@ const touchFile = (name) => {
                 console.log(err);
             }
             var pageConfig = new HTMLPageConfig({
-                "filePath": `path.resolve(common.location.private, '${name}', 'pages', '${name}' + '.art')`,
+                "filePath": `path.resolve(common.location.private, '${name}', 'html', '${name}' + '.art')`,
                 "chunks": `['${name}']`,
                 "fileName": `'${name}.html'`,
                 "pageName": name,
@@ -69,6 +69,9 @@ const touchFile = (name) => {
 }
 
 const createNewPage = () => {
+    if (!fileExist(common.location.private)) {
+        fs.mkdirSync(common.location.private, newFileCallBack);
+    }
     process.stdin.setEncoding('utf8');
     console.log("请输入页面名称");
     process.stdin.on('readable', () => {
