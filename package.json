@@ -1,16 +1,11 @@
 {
-  "name": "es6_wepack_ts",
-  "version": "1.0.0",
-  "description": "",
-  "main": "es6.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "new": "node ./gulp/new_page.js",
-    "dev": "sudo gulp dev",
+    "new": "node ./util/new_page.js",
+    "dev": "gulp dev",
     "build": "gulp build"
   },
   "author": "caijinbiao",
-  "license": "ISC",
   "devDependencies": {
     "art-template": "^4.12.1",
     "art-template-loader": "^1.4.3",

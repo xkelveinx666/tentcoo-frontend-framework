@@ -5,16 +5,8 @@ const path = global.path || require('path');
 // 网页名正则，以小写字母，数字下划线组成,3位到12位不能过长也不能过短
 const pageNameRegex = /^[a-z0-9_]{2}/;
 const onlyNumberRegex = /^[0-9]/;
-const HTMLPageConfig = require('../config/HTMLPageConfig');
-
-const fileExist = (path) => {
-    try {
-        fs.accessSync(path);
-    } catch (e) {
-        return false;
-    }
-    return true;
-}
+const HTMLPageConfig = require('../config/html_page_config');
+const fileExist = require('./file_exist');
 
 const newFileCallBack = (err) => {
     if (err) {
@@ -27,7 +19,7 @@ const touchFile = (name) => {
     fs.mkdirSync(workplace);
     const config = path.resolve(workplace, 'config'),
         mock = path.resolve(workplace, 'mock'),
-        pages = path.resolve(workplace, 'pages'),
+        pages = path.resolve(workplace, 'html'),
         styles = path.resolve(workplace, 'styles'),
         scripts = path.resolve(workplace, 'scripts'),
         mainPage = path.resolve(pages, name + '.art'),
@@ -38,37 +30,39 @@ const touchFile = (name) => {
         if (err) {
             console.log(err);
         }
-        fs.open(entryConfigPath, 'w', newFileCallBack);
+        fs.open(entryConfigPath, 'w', (err, data) => {
+            if (err) {
+                console.log(err);
+            }
+            let entryConfig = `if(module.hot){module.hot.accept();}`
+            fs.write(data, entryConfig, newFileCallBack);
+        });
         fs.open(buildConfigPath, 'w', (err, data) => {
             if (err) {
                 console.log(err);
             }
-            var pageConfig = `const pageConfig = {}
-                module.exports = pageConfig;`
-            fs.write(data, pageConfig, newFileCallBack);
+            var buildConfig = `const buildConfig = {};\nmodule.exports = buildConfig;`
+            fs.write(data, buildConfig, newFileCallBack);
         });
         fs.open(pageConfigPath, 'w', (err, data) => {
             if (err) {
                 console.log(err);
             }
             var pageConfig = new HTMLPageConfig({
-                "filepath": `path.resolve(common.location.private, '${name}', 'pages', '${name}' + '.art')`,
+                "filePath": `path.resolve(common.location.private, '${name}', 'pages', '${name}' + '.art')`,
                 "chunks": `['${name}']`,
-                "filename": `'${name}.html'`,
-                "pagename": name,
+                "fileName": `'${name}.html'`,
+                "pageName": name,
             });
-            console.log(pageConfig);
             fs.write(data, pageConfig, newFileCallBack);
         });
     });
-    fs.mkdir(mock, newFileCallBack);
+    // fs.mkdir(mock, newFileCallBack);暂时去除mock数据测试
     fs.mkdir(pages, (err) => {
         if (err) {
             console.log(err);
         }
-        fs.copy(common.location.defaultHTML, mainPage, (err, file) => {
-            console.log(file);
-        });
+        fs.copy(common.location.defaultHTML, mainPage, (err, file) => {});
     });
     fs.mkdir(styles, newFileCallBack);
     fs.mkdir(scripts, newFileCallBack);

@@ -7,7 +7,7 @@ const gulp = require('gulp'), //本地安装gulp所用到的地方
     webpackHotMiddleware = require("webpack-hot-middleware"),
     proxy = require('http-proxy-middleware'),
     del = require('del'),
-    assign = require('./config/assign_object');
+    assign = require('./util/assign_object');
 
 let browserSync = require("browser-sync").create();
 
@@ -42,11 +42,6 @@ gulp.task('dev', () => {
     let serverConfig = loadingConfig();
     let webpackConfig = assign(serverConfig.devConfig, serverConfig.originalConfig);
     let bundler = webpack(webpackConfig);
-    // const middlewareProxy = proxy('/clock2.0/', {
-    //     "target": 'http://localhost:3000',
-    //     "secure": false,
-    //     "changeOrigin": true,
-    // });
     const middlewareProxy = proxy('/new_member/', {
         "target": 'http://10.11.3.206:8080',
         "secure": false,

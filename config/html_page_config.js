@@ -5,7 +5,7 @@ class HTMLPageConfig {
         icon = "天高科技工作室logo",
         description = "华南理工大学广州学院计算机工程学院天高科技工作室",
         keywords = "tentcoo, GCU",
-        filename,
+        fileName,
         chunks,
         pageName
     } = {
@@ -19,7 +19,7 @@ class HTMLPageConfig {
         this.icon = icon;
         this.description = description;
         this.keywords = keywords;
-        this.filename = filename;
+        this.fileName = fileName;
         this.chunks = chunks;
         this.pageName = pageName;
     }
@@ -33,7 +33,7 @@ ${this.pageName} = {
     "icon": "${this.icon}",
     "description": "${this.description}",
     "keywords": "${this.keywords}",
-    "filename": ${this.filename},
+    "fileName": ${this.fileName},
     "chunks": ${this.chunks},
     "initConfig": pageInitConfig,
 }
