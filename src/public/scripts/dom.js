@@ -1,14 +1,18 @@
 import isDom from './isDom';
 import support from './event_support';
+import error from './error';
+
 
 class Dom {
     constructor(dom) {
+        if (!dom) {
+            error("dom has not defined");
+        }
         if (typeof (dom) === 'string') {
             dom = document.createElement(dom);
         }
         if (!isDom(dom)) {
-            console.error(dom + " is no the type of dom");
-            throw TypeError();
+            error(dom + " is no the type of dom");
         }
         this.dom = dom;
         this.className = dom.className;
@@ -22,19 +26,19 @@ class Dom {
     };
     getAttr(attrName) {
         if (typeof (attrName) !== 'string') {
-            console.error(attrName + " is not a string in getAttr function");
+            error(attrName + " is not a string in getAttr function");
             return false;
         }
         return this.dom.getAttribute(attrName);
     }
     setAttr(attrName, attrValue) {
         if (typeof (attrName) !== 'string') {
-            console.error(attrName + " is not a string in setAttr function");
+            error(attrName + " is not a string in setAttr function");
             return false;
 
         }
         if (typeof (attrValue) !== 'string') {
-            console.error(attrValue + " is not a string in setAttr function");
+            error(attrValue + " is not a string in setAttr function");
             return false;
         }
         this.dom.setAttribute(attrName, attrValue);
@@ -45,14 +49,14 @@ class Dom {
     }
     setClassName(newClassName) {
         if (typeof (newClassName) !== 'string') {
-            console.error(newClassName + " is illegal in setClassName function");
+            error(newClassName + " is illegal in setClassName function");
             return false;
         }
         this.className = newClassName;
     }
     addClassName(newClassName) {
         if (typeof (newClassName) !== 'string') {
-            console.error(newClassName + " is illegal in addClassName function");
+            error(newClassName + " is illegal in addClassName function");
             return false;
         }
         const classNameArray = this.className.split(' ');
@@ -68,7 +72,7 @@ class Dom {
     }
     removeClassName(existClassName) {
         if (typeof (existClassName) !== 'string') {
-            console.error(existClassName + " is illegal in removeClassName function");
+            error(existClassName + " is illegal in removeClassName function");
             return false;
         }
         const classNameArray = this.className.split(' ');
@@ -88,14 +92,14 @@ class Dom {
     }
     addChildFront(childDom) {
         if (!childDom || !childDom instanceof Dom) {
-            console.error(childDom + "is not a instance of Dom");
+            error(childDom + "is not a instance of Dom");
             return false;
         }
         this.dom.insertBefore(childDom.getDom(), this.getFirstChild());
     }
     addChildTail(childDom) {
         if (!childDom || !childDom instanceof Dom) {
-            console.error(childDom + "is not a instance of Dom");
+            error(childDom + "is not a instance of Dom");
             return false;
         }
         this.dom.appendChild(childDom.getDom());
@@ -108,7 +112,7 @@ class Dom {
     setValue(newValueStr) {
         //双向绑定
         if (typeof (newValueStr) !== 'string') {
-            console.error(newValueStr + " is illegal for value in setValue")
+            error(newValueStr + " is illegal for value in setValue")
             return false;
         }
         this.value = newValueStr;
@@ -119,7 +123,7 @@ class Dom {
     }
     appendValue(newValueStr) {
         if (typeof (newValueStr) !== 'string') {
-            console.error(newValueStr + " is illegal for value in appendValue")
+            error(newValueStr + " is illegal for value in appendValue")
             return false;
         }
         this.value += newValueStr;

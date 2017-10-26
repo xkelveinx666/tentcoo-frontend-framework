@@ -1,4 +1,5 @@
 import Dom from './dom';
+import error from './error';
 
 class JSONData {
     constructor(data) {
@@ -6,13 +7,13 @@ class JSONData {
         if (data) {
             if (data instanceof Map) {
                 this.map = data;
-                throw TypeError();
+                error(data + " is not the instanceof Map");
             } else if (typeof (data) === 'string' && JSON.parse(data)) {
                 this.json = data;
                 this.map = new Map();
                 this.strToMap();
             } else {
-                throw TypeError();
+                error(data + " is illegal");
             }
         } else {
             this.map = new Map();
@@ -20,13 +21,13 @@ class JSONData {
     }
     get(key) {
         if (typeof (key) !== 'string') {
-            throw TypeError();
+            error(key + " is a string");
         }
         return this.map.get(key);
     }
     append(key, value) {
         if (typeof (key) !== 'string') {
-            throw TypeError();
+            error(key + " is a string");
         }
         this.map.set(key, value);
     }

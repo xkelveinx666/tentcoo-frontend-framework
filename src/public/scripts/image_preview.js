@@ -1,4 +1,5 @@
 import Dom from './dom';
+import error from './error';
 
 export default (function () {
     const imgFilter = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
@@ -12,15 +13,15 @@ export default (function () {
         hintText
     }) => {
         if (!inputDom instanceof Dom) {
-            console.error(inputDom + " is not instance of Dom in preview function");
+            error(inputDom + " is not instance of Dom in preview function");
             return false;
         }
         if (!imgDom instanceof Dom) {
-            console.error(imgDom + " is not instance of Dom in preview function");
+            error(imgDom + " is not instance of Dom in preview function");
             return false;
         }
         if (inputDom.getValue() === "") {
-            console.error("请先上传图片");
+            error("请先上传图片");
             return false;
         }
         if (inputDom.getDom().files) {
@@ -34,7 +35,7 @@ export default (function () {
                 } else {
                     alert("请上传正确的图片格式");
                 }
-                console.error(file + "is not the type of img");
+                error(file + "is not the type of img");
                 return false;
             }
             let imgDataURL = createObjectURL(file);

@@ -1,4 +1,5 @@
 import Dom from './dom';
+import error from './error';
 
 const emojiRegex = require('emoji-regex');
 
@@ -58,46 +59,58 @@ class TestInput {
         }
     };
     testLength(text, length) {
+        if (text || length) {
+            error(text + " or " + " is undefined");
+        }
         return length >= text.length;
     }
     keepChinese(text) {
         if (typeof (text) !== 'string') {
-            throw TypeError();
+            error(text + " is not a string");
         }
         return text.replace(this.nonChinese, "");
     }
     keepNumber(text) {
         if (typeof (text) !== 'string') {
-            throw TypeError();
+            error(text + " is not a string");
         }
         return text.replace(this.nonNumber, "");
     }
     keepEnglish(text) {
         if (typeof (text) !== 'string') {
-            throw TypeError();
+            error(text + " is not a string");
         }
         return text.replace(this.nonEnglish, "");
     }
     keepLength(text, length) {
-        if (typeof (text) !== 'string' || typeof (length) !== 'number') {
-            throw TypeError();
+        if (typeof (text) !== 'string') {
+            error(text + " is not a string");
+        }
+        if (typeof (length) !== 'number') {
+            error(length + " is not a number");
         }
         return text.substring(0, length + 1);
     }
     replace(text, regex) {
         if (typeof (text) !== 'string') {
-            throw TypeError();
+            error(text + " is not a string");
         }
 
         if (typeof (regex) !== 'string') {
-            throw TypeError();
+            error(regex + " is not a string");
         }
         return text.replace(regex, '');
     }
     notIllegal(text) {
+        if (typeof (text) !== 'string') {
+            error(text + " is not a string");
+        }
         return text.replace(this.emoji, '');
     };
     addIndent(text) {
+        if (typeof (text) !== 'string') {
+            error(text + " is not a string");
+        }
         return text.replace(this.enterNotIndent, '\n  ');
     };
     judgeStudentID(text, hintTag) {
@@ -109,7 +122,7 @@ class TestInput {
             month = date.getMonth() + 1,
             cardYear = text.substring(0, 4);
         if (hintTag && !hintTag instanceof Dom) {
-            throw TypeError();
+            error(hintTag + " is not a instanceof Dom");
         }
         if (!this.number.test(text)) {
             if (hintTag) {
@@ -149,7 +162,7 @@ class TestInput {
         const errorLength = "只能输入完整姓名,两个字到四个字",
             errorType = "姓名必须为中文";
         if (hintTag && !hintTag instanceof Dom) {
-            throw TypeError();
+            error(hintTag + " is not a instanceof Dom");
         }
         if (text.length < 2 || text.length > 4) {
             if (hintTag) {
@@ -178,7 +191,7 @@ class TestInput {
         const errorType = "手机号必须纯数字",
             errorFormat = "手机号码格式错误，请重新输入";
         if (hintTag && !hintTag instanceof Dom) {
-            throw TypeError();
+            error(hintTag + " is not a instanceof Dom");
         }
         if (!this.number.test(text)) {
             if (hintTag) {
@@ -208,7 +221,7 @@ class TestInput {
     judgeEmail(text, hintTag) {
         const errorType = "邮箱格式错误，请重新输入";
         if (hintTag && !hintTag instanceof Dom) {
-            throw TypeError();
+            error(hintTag + " is not a instanceof Dom");
         }
         if (!this.email.test(text)) {
             if (hintTag) {
