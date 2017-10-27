@@ -8,7 +8,7 @@ if (!window.Map) {
         };
         set(key, value) {
             if (typeof (key) !== 'string') {
-                error(key + " is a string");
+                error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -22,7 +22,7 @@ if (!window.Map) {
         };
         get(key) {
             if (typeof (key) !== 'string') {
-                error(key + " is a string");
+                error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -38,7 +38,7 @@ if (!window.Map) {
 
         has(key) {
             if (typeof (key) !== 'string') {
-                error(key + " is a string");
+                error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -50,7 +50,7 @@ if (!window.Map) {
 
         delete(key) {
             if (typeof (key) !== 'string') {
-                error(key + " is a string");
+                error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -81,7 +81,7 @@ if (!window.Map) {
 
         forEach(func) {
             if (typeof (func) !== "function") {
-                error(func + " is a function");
+                error(func + " is not a function");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 func(this.nameArray[index], this.valueArray[index]);
