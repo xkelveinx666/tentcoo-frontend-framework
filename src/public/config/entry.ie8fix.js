@@ -1,6 +1,7 @@
 require('../scripts/defineProperty');
 require('../scripts/object_create');
 require('../scripts/forEach');
+require('../scripts/array_form');
 require('../scripts/array_indexOf');
 require('es6-promise').polyfill();
 require('console-polyfill');

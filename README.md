@@ -2,20 +2,10 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.1 
-- 新增常用操作类
-1. ajax类，用Fetch定义，并统一操作的接口，简化操作
-2. array操作类，由es6的array方法的IE8可用的polyfill
-3. database操作类(未完成)，使用统一化的接口对前端数据库进行操作，已对数据进行缓存
-4. dom类，统一化dom的操作方法，集中解决dom操作的兼容性问题，包括事件的兼容
-5. image_preview类，统一化的图像预览方案，绑定input与img。实现直至IE8的本地预览
-6. test_input类，常用的正则表达式操作与校验函数。
-- 逻辑结构优化
-1. private文件夹中的每个页面有填充该页面独立的controller
-2. 添加事件及判断的activity
-3. 准备添加build.page.js，用于art-template生成页面的配置读取
-- 输出
-1. 打包生成的文件更合理，均在文件夹内。
+v1.11
+- selector调用兼容map
+- map错误提示修改
+- 修复对于input的双向绑定
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
@@ -33,6 +23,11 @@ v1.1
 5. dom类，统一化dom的操作方法，集中解决dom操作的兼容性问题，包括事件的兼容
 6. image_preview类，统一化的图像预览方案，绑定input与img。实现直至IE8的本地预览
 7. test_input类，常用的正则表达式操作与校验函数。
+### input双向绑定
+1. 创建对象时自动添加input事件，保证输入框的内容与js对象中的数据保持同步。
+2. 使用setValue()方法，在设置js对象的value值时，同步更改input输入框内容。
+- 只针对text,password
+- input事件不支持阻止默认事件
 ### Webpack
 使用了Webpack-dev-server中的HMR，让资源全部在内存中运行，提高开发编译效率。
 

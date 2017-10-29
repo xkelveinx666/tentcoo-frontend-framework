@@ -1,7 +1,7 @@
-import isDom from './isDom';
+import isDom from './is_dom';
 import support from './event_support';
 import error from './error';
-
+import isTextBox from './is_text_box';
 
 class Dom {
     constructor(dom) {
@@ -19,7 +19,7 @@ class Dom {
         this.tagName = dom.tagName.toLowerCase();
         this.id = dom.id;
         this.value = dom.innerHTML;
-        if (this.tagName === 'input' || this.tagName === 'textarea') {
+        if (isTextBox(this.dom)) {
             this.value = dom.value;
             this.bind();
         }
@@ -110,13 +110,14 @@ class Dom {
         }
     }
     setValue(newValueStr) {
-        //双向绑定
         if (typeof (newValueStr) !== 'string') {
             error(newValueStr + " is illegal for value in setValue")
             return false;
         }
-        this.value = newValueStr;
-        this.updateNode();
+        if (newValueStr !== this.value) {
+            this.value = newValueStr;
+            this.updateNode();
+        }
     }
     getValue() {
         return this.value;
@@ -163,7 +164,7 @@ class Dom {
         if (this.dom.id !== this.id) {
             this.dom.id = this.id
         }
-        if (this.dom.tagName === 'input' || this.dom.tagName === 'textarea') {
+        if (isTextBox(this.dom)) {
             if (this.dom.value !== this.value) {
                 this.dom.value = this.value;
             }
@@ -173,36 +174,38 @@ class Dom {
     }
     addListener(eventName, callback) {
         if (eventName === 'input' && !support('input')) {
-            this.addListener('change', callback);
-            return;
+            if (support("propertychange")) {
+                this.addListener('propertychange', callback);
+                return;
+            } else {
+                this.addListener('keydown', callback);
+                return;
+            }
         }
         if (this.dom.addEventListener) {
             this.dom.addEventListener(eventName, (e) => {
+                e.preventDefault();
                 window.event ? window.event.cancelBubble = true : e.stopPropagation();
                 const event = e || window.event;
                 const target = event.target || event.srcElement;
-                if (callback({
-                        'context': this,
-                        'event': event,
-                        'value': (this.tagName === 'input' && this.dom.type !== 'button' || this.tagName === 'textarea') ? this.dom.value : this.dom.innerHTML,
-                    }) === false) {
-                    event.preventDefault ? event.preventDefault() : event.returnValue = false;
-                    return false;
-                }
+                const value = isTextBox(this.dom) ? target.value : this.dom.innerHTML;
+                callback({
+                    'context': this,
+                    'event': event,
+                    'value': value,
+                });
             }, false);
         } else if (this.dom.attachEvent) {
             this.dom.attachEvent("on" + eventName, (e) => {
                 window.event ? window.event.cancelBubble = true : e.stopPropagation();
                 const event = e || window.event;
                 const target = event.target || event.srcElement;
-                if (callback({
-                        'context': this,
-                        'event': event,
-                        'value': (this.tagName === 'input' || this.tagName === 'textarea') ? this.dom.value : this.dom.innerHTML,
-                    }) === false) {
-                    event.preventDefault ? event.preventDefault() : event.returnValue = false;
-                    return false;
-                }
+                const value = isTextBox(this.dom) ? target.value : this.dom.innerHTML;
+                callback({
+                    'context': this,
+                    'event': event,
+                    'value': value,
+                });
             });
         } else {
             this.dom['on' + eventName] = callback;
@@ -228,12 +231,7 @@ class Dom {
         this.addListener('input', ({
             value
         }) => {
-            this.setValue(value);
-        });
-        this.addListener('change', ({
-            value
-        }) => {
-            this.setValue(value);
+            this.value = value;
         });
     }
 }
