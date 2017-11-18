@@ -42,8 +42,8 @@ gulp.task('dev', () => {
     let serverConfig = loadingConfig();
     let webpackConfig = assign(serverConfig.devConfig, serverConfig.originalConfig);
     let bundler = webpack(webpackConfig);
-    const middlewareProxy = proxy('/new_member/', {
-        "target": 'http://10.11.3.206:8080',
+    const middlewareProxy = proxy('/new_seat/', {
+        "target": 'http://10.11.3.199:8080',
         "secure": false,
         "changeOrigin": true,
     });

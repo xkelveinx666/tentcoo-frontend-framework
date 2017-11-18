@@ -1,11 +1,31 @@
-const ajax = ({ url, method, parameter, acceptFunction, failFunction }) => {
+import error from './error';
+import contentType from './content_type';
+
+const ajax = ({
+    url,
+    param,
+    type,
+    async = true,
+    acceptFunc = (data) => {
+        if (data) {
+            console.log(data);
+        }
+    },
+    failFunc = (err) => {
+        if (data) {
+            console.log(data);
+        } else {
+            console.log("请检查网络连接，或尝试刷新页面");
+        }
+    }
+}) => {
     if (!url) {
-        console.log("url is null");
+        error("url is null");
         return;
     }
     const requestBody = {
-        "method": method,
-        "header": new Headers(),
+        "method": type,
+        "body": param
     };
     const request = new Request(url, requestBody);
     fetch(request)
@@ -13,16 +33,15 @@ const ajax = ({ url, method, parameter, acceptFunction, failFunction }) => {
             if (response.ok) {
                 return response.text();
             } else {
-                failFunction();
-                console.log('fail fetch ' + url);
+                error('fail fetch ' + url);
             }
         }).then((text) => {
-            if (acceptFunction) {
-                acceptFunction(JSON.parse(text));
+            if (acceptFunc) {
+                acceptFunc(text);
             }
-        }).catch((error) => {
-            failFunction();
-            console.log(error);
+        }).catch((errorDesc) => {
+            failFunc(errorDesc);
+            error(errorDesc);
         });
 };
 

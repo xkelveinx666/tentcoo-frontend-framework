@@ -1,0 +1,58 @@
+import Dom from './dom';
+import error from './error';
+
+class POJO {
+    constructor(form) {
+        this.data = new Map();
+        if (form) {
+            if (!form instanceof Dom) {
+                error(form + " is not the instance of Dom");
+            } else if (form.tagName.toString().toLowerCase() !== 'form') {
+                error(form + " is not a form");
+            }
+            form.getChildren().forEach((input) => {
+                if (input.getAttr("tagName") === "input" && input.getAttr("type") === "text" || input.getAttr("type") === "password") {
+                    const key = input.getAttr("name");
+                    const value = input.getValue();
+                    if (key && value && key !== '') {
+                        this.data.set(key, value);
+                    }
+                }
+            });
+        }
+    }
+    get(key) {
+        if (typeof (key) !== 'string') {
+            error(key + " is a string");
+        }
+        return this.data.get(key);
+    }
+    append(key, value) {
+        if (typeof (key) !== 'string') {
+            error(key + " is a string");
+        }
+        this.data.set(key, value);
+    }
+    forEach(func) {
+        return this.data.forEach(func);
+    }
+    toString() {
+        let result = '';
+        this.data.forEach((value, key) => {
+            result += key + '=' + value + '&';
+        });
+        return result.substring(0, result.length - 1);
+    }
+    getFormData() {
+        if (!window.FormData) {
+            return null;
+        }
+        const fd = new FormData();
+        this.data.forEach((value, key) => {
+            fd.append(key, value);
+        });
+        return fd;
+    }
+}
+
+export default POJO;

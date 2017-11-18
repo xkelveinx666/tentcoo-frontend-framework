@@ -27,21 +27,22 @@ class Dom {
     getAttr(attrName) {
         if (typeof (attrName) !== 'string') {
             error(attrName + " is not a string in getAttr function");
-            return false;
         }
-        return this.dom.getAttribute(attrName);
+        return this.dom.getAttribute(attrName) || this.dom[attrName];
     }
     setAttr(attrName, attrValue) {
         if (typeof (attrName) !== 'string') {
             error(attrName + " is not a string in setAttr function");
-            return false;
 
         }
         if (typeof (attrValue) !== 'string') {
             error(attrValue + " is not a string in setAttr function");
-            return false;
         }
-        this.dom.setAttribute(attrName, attrValue);
+        if (this[attrName]) {
+            this.dom[attrName] = attrValue;
+        } else {
+            this.dom.setAttribute(attrName, attrValue);
+        }
     }
 
     getClassName() {
@@ -50,14 +51,12 @@ class Dom {
     setClassName(newClassName) {
         if (typeof (newClassName) !== 'string') {
             error(newClassName + " is illegal in setClassName function");
-            return false;
         }
         this.className = newClassName;
     }
     addClassName(newClassName) {
         if (typeof (newClassName) !== 'string') {
             error(newClassName + " is illegal in addClassName function");
-            return false;
         }
         const classNameArray = this.className.split(' ');
         classNameArray.forEach((name) => {
@@ -73,7 +72,6 @@ class Dom {
     removeClassName(existClassName) {
         if (typeof (existClassName) !== 'string') {
             error(existClassName + " is illegal in removeClassName function");
-            return false;
         }
         const classNameArray = this.className.split(' ');
         let newClassName = "";
@@ -87,32 +85,80 @@ class Dom {
     getDom() {
         return this.dom;
     }
+    getChildren(selector) {
+        let children = [],
+            child = this.getFirstChild();
+        if (!child) {
+            return null;
+        } else {
+            child = child.getDom();
+        }
+        while (child) {
+            if (child.nodeType !== 3 && child.nodeType !== 8) {
+                if (selector) {
+                    if (typeof (selector) !== "string") {
+                        error(selector + " is not a string");
+                    }
+                    if (selector.charAt(0) === '.') {
+                        if (child.className === selector.substring(1, selector.length)) {
+                            children.push(new Dom(child));
+                            continue;
+                        }
+                    } else if (selector.charAt(0) === '#') {
+                        if (child.id === selector.substring(1, selector.length)) {
+                            children.push(new Dom(child));
+                            continue;
+                        }
+                    } else {
+                        if (child.tagName === selector.substring(1, selector.length)) {
+                            children.push(new Dom(child));
+                            continue;
+                        }
+                    }
+                    error(selector + " has not matched element in " + this.tagName);
+                } else {
+                    children.push(new Dom(child));
+                }
+            }
+            child = child.nextSibling;
+        }
+        return children;
+    }
     getFirstChild() {
-        return this.dom.firstElementChild || this.dom.children[0];
+        return this.dom.firstElementChild ? new Dom(this.dom.firstElementChild) : this.dom.children[0] ? new Dom(this.dom.children[0]) : null;
     }
     addChildFront(childDom) {
         if (!childDom || !childDom instanceof Dom) {
             error(childDom + "is not a instance of Dom");
-            return false;
         }
-        this.dom.insertBefore(childDom.getDom(), this.getFirstChild());
+        this.dom.insertBefore(childDom.getDom(), this.getFirstChild().getDom());
     }
     addChildTail(childDom) {
         if (!childDom || !childDom instanceof Dom) {
             error(childDom + "is not a instance of Dom");
-            return false;
         }
         this.dom.appendChild(childDom.getDom());
     }
+    removeChild(childDom) {
+        if (!childDom || !childDom instanceof Dom) {
+            error(childDom + "is not a instance of Dom");
+        }
+        this.dom.removeChild(childDom.getDom());
+    }
     cleanChildren() {
         while (this.getFirstChild()) {
-            this.dom.removeChild(this.getFirstChild());
+            this.dom.removeChild(this.getFirstChild().getDom());
         }
+    }
+    replaceNode(newNode) {
+        if (!newNode instanceof Dom) {
+            error(newNode + "is not a Dom");
+        }
+        this.getParent().getDom().replaceChild(newNode.getDom(), this.getDom());
     }
     setValue(newValueStr) {
         if (typeof (newValueStr) !== 'string') {
             error(newValueStr + " is illegal for value in setValue")
-            return false;
         }
         if (newValueStr !== this.value) {
             this.value = newValueStr;
@@ -125,7 +171,6 @@ class Dom {
     appendValue(newValueStr) {
         if (typeof (newValueStr) !== 'string') {
             error(newValueStr + " is illegal for value in appendValue")
-            return false;
         }
         this.value += newValueStr;
         this.updateNode();
@@ -136,7 +181,7 @@ class Dom {
     getNextSibling() {
         //排除文本节点
         let node = this.dom.nextSibling;
-        while (node.nodeType == 3 || node.nodeType == 8) {
+        while (node.nodeType === 3 || node.nodeType === 8) {
             node = node.nextSibling;
         }
         return new Dom(node);
@@ -144,7 +189,7 @@ class Dom {
     getPreSibling() {
         //排除文本节点
         let node = this.dom.previousSibling;
-        while (node.nodeType == 3 || node.nodeType == 8) {
+        while (node.nodeType === 3 || node.nodeType === 8) {
             node = node.previousSibling;
         }
         return new Dom(node);
@@ -219,11 +264,10 @@ class Dom {
         }
     }
     clone(deep) {
-        if (deep) {
-            return JSON.parse(JSON.stringify(this));
+        if (deep === true) {
+            return new Dom(this.getDom().cloneNode(true));
         } else {
-            let domClone = this.dom.cloneNode(true);
-            return new Dom(domClone);
+            return new Dom(this.getDom().cloneNode(false));
         }
     }
     bind() {

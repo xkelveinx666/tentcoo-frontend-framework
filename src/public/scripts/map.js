@@ -84,7 +84,7 @@ if (!window.Map) {
                 error(func + " is not a function");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
-                func(this.nameArray[index], this.valueArray[index]);
+                func(this.valueArray[index], this.nameArray[index]);
             }
         }
     }

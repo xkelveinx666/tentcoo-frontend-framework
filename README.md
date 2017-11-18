@@ -2,17 +2,18 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.11
-- selector调用兼容map
-- map错误提示修改
-- 修复对于input的双向绑定
+v1.15
+- 写了ajax.fileupload.js文件用于文件上传，使用统一的接口。
+- IE8使用iframe异步提交方式，现代浏览器使用了file api+formdata的方式
+- 目前实现了ie8标准模式下的文件上传,无刷新，可获取返回值，进度条问题解决
+- 添加error_dialog将错误信息显示
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
 同时支持CSS使用SCSS,HTML使用art-template,JS使用ES6
 
 ## 兼容性
-已经确认常用兼容性到IE10+，准备写formdata的polufill以保证兼容性到IE8
+已经确认常用兼容性到IE8+
 
 ## 特点
 ### JavaScript
@@ -23,6 +24,14 @@ v1.11
 5. dom类，统一化dom的操作方法，集中解决dom操作的兼容性问题，包括事件的兼容
 6. image_preview类，统一化的图像预览方案，绑定input与img。实现直至IE8的本地预览
 7. test_input类，常用的正则表达式操作与校验函数。
+### ajax
+- ajax传入函数使用POJO类，类似formdata能快速进行参数的打包与发送
+- content-type类以提供更快的匹配所需的header说明
+### 文件上传
+- 使用ajax.fileupload.js文件用于文件上传，使用统一的接口
+- async参数用于决定同步或异步
+- 参考了jquery.form.js代码
+- fileDom为上传文件的input的Dom对象，可以是数组
 ### input双向绑定
 1. 创建对象时自动添加input事件，保证输入框的内容与js对象中的数据保持同步。
 2. 使用setValue()方法，在设置js对象的value值时，同步更改input输入框内容。
@@ -30,6 +39,9 @@ v1.11
 - input事件不支持阻止默认事件
 ### Webpack
 使用了Webpack-dev-server中的HMR，让资源全部在内存中运行，提高开发编译效率。
+### 错误提示
+- 使用window.onerror拦截所有异常并输出,防止低版本ie或手机浏览器无法查看错误信息
+- 可以使用传入不同函数以实现美观的错误提示。
 
 ## 如何使用
 1. git clone git@github.com:xkelveinx666/tentcoo-frontend-framework.git

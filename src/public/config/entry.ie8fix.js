@@ -1,9 +1,11 @@
+require('../scripts/trim');
 require('../scripts/defineProperty');
 require('../scripts/object_create');
 require('../scripts/forEach');
 require('../scripts/array_form');
 require('../scripts/array_indexOf');
 require('es6-promise').polyfill();
+require('json3');
 require('console-polyfill');
 require('../scripts/map');
 require('../scripts/queryselector');
