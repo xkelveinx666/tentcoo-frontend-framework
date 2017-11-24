@@ -1,10 +1,12 @@
 import error from './error';
-import contentType from './content_type';
+import getContentType from './content_type';
+import POJO from './pojo';
 
 const ajax = ({
     url,
     param,
     type,
+    contentType = "form",
     async = true,
     acceptFunc = (data) => {
         if (data) {
@@ -12,10 +14,10 @@ const ajax = ({
         }
     },
     failFunc = (err) => {
-        if (data) {
-            console.log(data);
+        if (err) {
+            console.log(err);
         } else {
-            console.log("请检查网络连接，或尝试刷新页面");
+            error("请检查网络连接，或尝试刷新页面");
         }
     }
 }) => {
@@ -23,10 +25,16 @@ const ajax = ({
         error("url is null");
         return;
     }
+    contentType = getContentType(contentType);
     const requestBody = {
         "method": type,
         "body": param
     };
+    if (contentType) {
+        requestBody.headers = {
+            "Content-Type": contentType,
+        };
+    }
     const request = new Request(url, requestBody);
     fetch(request)
         .then((response) => {
@@ -36,12 +44,18 @@ const ajax = ({
                 error('fail fetch ' + url);
             }
         }).then((text) => {
-            if (acceptFunc) {
+            try {
+                const pojo = new POJO(text);
+                if (pojo.get("status") === "accept") {
+                    acceptFunc(pojo);
+                } else {
+                    failFunc(pojo);
+                }
+            } catch (JSONPraseError) {
                 acceptFunc(text);
             }
         }).catch((errorDesc) => {
             failFunc(errorDesc);
-            error(errorDesc);
         });
 };
 

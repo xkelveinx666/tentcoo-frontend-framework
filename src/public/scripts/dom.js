@@ -2,6 +2,8 @@ import isDom from './is_dom';
 import support from './event_support';
 import error from './error';
 import isTextBox from './is_text_box';
+import isFileDom from './is_file_dom';
+import isInput from './is_input';
 
 class Dom {
     constructor(dom) {
@@ -19,9 +21,12 @@ class Dom {
         this.tagName = dom.tagName.toLowerCase();
         this.id = dom.id;
         this.value = dom.innerHTML;
-        if (isTextBox(this.dom)) {
+        if (isTextBox(dom)) {
             this.value = dom.value;
-            this.bind();
+            this.inputBind();
+        } else if (isFileDom(dom)) {
+            this.value = dom.value;
+            this.changeBind();
         }
     };
     getAttr(attrName) {
@@ -233,7 +238,7 @@ class Dom {
                 window.event ? window.event.cancelBubble = true : e.stopPropagation();
                 const event = e || window.event;
                 const target = event.target || event.srcElement;
-                const value = isTextBox(this.dom) ? target.value : this.dom.innerHTML;
+                const value = isTextBox(this.dom) || isInput(this.dom) ? target.value : this.dom.innerHTML;
                 callback({
                     'context': this,
                     'event': event,
@@ -245,7 +250,7 @@ class Dom {
                 window.event ? window.event.cancelBubble = true : e.stopPropagation();
                 const event = e || window.event;
                 const target = event.target || event.srcElement;
-                const value = isTextBox(this.dom) ? target.value : this.dom.innerHTML;
+                const value = isTextBox(this.dom) || isInput(this.dom) ? target.value : this.dom.innerHTML;
                 callback({
                     'context': this,
                     'event': event,
@@ -270,9 +275,16 @@ class Dom {
             return new Dom(this.getDom().cloneNode(false));
         }
     }
-    bind() {
+    inputBind() {
         //双向绑定
         this.addListener('input', ({
+            value
+        }) => {
+            this.value = value;
+        });
+    }
+    changeBind() {
+        this.addListener('change', ({
             value
         }) => {
             this.value = value;

@@ -5,6 +5,10 @@ class POJO {
     constructor(form) {
         this.data = new Map();
         if (form) {
+            if (typeof (form) === 'string' && JSON.parse(form)) {
+                this.strToMap(form);
+                return;
+            }
             if (!form instanceof Dom) {
                 error(form + " is not the instance of Dom");
             } else if (form.tagName.toString().toLowerCase() !== 'form') {
@@ -39,9 +43,10 @@ class POJO {
     toString() {
         let result = '';
         this.data.forEach((value, key) => {
-            result += key + '=' + value + '&';
+            result += `${key}=${encodeURIComponent(value)}&`;
         });
         return result.substring(0, result.length - 1);
+
     }
     getFormData() {
         if (!window.FormData) {
@@ -52,6 +57,12 @@ class POJO {
             fd.append(key, value);
         });
         return fd;
+    }
+    strToMap(json) {
+        const jsonObj = JSON.parse(json);
+        for (let key in jsonObj) {
+            this.append(key, jsonObj[key]);
+        }
     }
 }
 

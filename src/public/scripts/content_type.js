@@ -1,11 +1,12 @@
 export default (type) => {
     let contentType = '';
-    if (!type) {
-        contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-    } else {
+    if (type) {
         switch (type) {
             case "form":
-                contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+            default:
+                contentType = "application/x-www-form-urlencoded;";
+                break;
+            case "file":
                 break;
             case "json":
                 contentType = "application/json";
@@ -13,9 +14,7 @@ export default (type) => {
             case "xml":
                 contentType = "text/xml";
                 break;
-            case "form-data":
-                contentType = "multipart/form-data";
-                break;
         }
     }
+    return contentType;
 }

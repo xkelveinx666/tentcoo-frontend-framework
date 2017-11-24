@@ -136,13 +136,15 @@ const ajaxFileUpload = ({
     multipart = false,
     async = true,
     acceptFunc = (data) => {
-        console.log(data);
-    },
-    failFunc = (data) => {
         if (data) {
             console.log(data);
+        }
+    },
+    failFunc = (err) => {
+        if (err) {
+            console.log(err);
         } else {
-            console.log("请检查网络连接，或尝试刷新页面");
+            error("请检查网络连接，或尝试刷新页面");
         }
     }
 }) => {
@@ -153,7 +155,7 @@ const ajaxFileUpload = ({
         fileDom = arr;
     }
     //使用FormData上传
-    if (false && api.File && api.FormData) {
+    if (api.File && api.FormData) {
         const formdata = param.getFormData();
         if (multipart) {
             fileDom.forEach((dom) => {
@@ -171,7 +173,8 @@ const ajaxFileUpload = ({
             "param": formdata,
             "async": async,
             "acceptFunc": acceptFunc,
-            "failFunc": failFunc
+            "failFunc": failFunc,
+            "contentType": "file",
         })
     } else {
         //创建表单并用iframe实现提交不刷新

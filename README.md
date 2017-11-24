@@ -2,11 +2,12 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.15
-- 写了ajax.fileupload.js文件用于文件上传，使用统一的接口。
-- IE8使用iframe异步提交方式，现代浏览器使用了file api+formdata的方式
-- 目前实现了ie8标准模式下的文件上传,无刷新，可获取返回值，进度条问题解决
-- 添加error_dialog将错误信息显示
+v1.17
+- 修复在正常ajax提交下能用content-type产生对应的头
+- 修复dom在对取value值和innerHTML之间的判断
+- 修复file类型的type没有正确的获取value
+- 修复图像预览
+- 修复Spring容器的多次取值和数组的dom判断
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
@@ -32,6 +33,8 @@ v1.15
 - async参数用于决定同步或异步
 - 参考了jquery.form.js代码
 - fileDom为上传文件的input的Dom对象，可以是数组
+- IE8使用iframe异步提交方式，现代浏览器使用了file api+formdata的方式
+- 目前实现了ie8标准模式下的文件上传,无刷新，可获取返回值，进度条问题解决
 ### input双向绑定
 1. 创建对象时自动添加input事件，保证输入框的内容与js对象中的数据保持同步。
 2. 使用setValue()方法，在设置js对象的value值时，同步更改input输入框内容。
