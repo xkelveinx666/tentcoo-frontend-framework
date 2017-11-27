@@ -2,12 +2,13 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.17
-- 修复在正常ajax提交下能用content-type产生对应的头
-- 修复dom在对取value值和innerHTML之间的判断
-- 修复file类型的type没有正确的获取value
-- 修复图像预览
-- 修复Spring容器的多次取值和数组的dom判断
+v1.18
+- 错误提示修改样式
+- 前端数据库改成sessionStorage，持久化改到缓存
+- ajax错误时默认函数添加更多情况
+- iOS的Safari下可能会出现sessionStorage不支持的错误
+- 在body添加ontouchstart修复iOS下hover无法正确使用的问题
+- 部分手机浏览器不支持Array.from(),于是改回成传统的遍历操作
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
@@ -26,8 +27,10 @@ v1.17
 6. image_preview类，统一化的图像预览方案，绑定input与img。实现直至IE8的本地预览
 7. test_input类，常用的正则表达式操作与校验函数。
 ### ajax
+- 修改Fech转回XHR,能正确设置同步异步
 - ajax传入函数使用POJO类，类似formdata能快速进行参数的打包与发送
 - content-type类以提供更快的匹配所需的header说明
+- 不主动创建Request保证了iOS浏览器的成功提交
 ### 文件上传
 - 使用ajax.fileupload.js文件用于文件上传，使用统一的接口
 - async参数用于决定同步或异步
@@ -45,6 +48,9 @@ v1.17
 ### 错误提示
 - 使用window.onerror拦截所有异常并输出,防止低版本ie或手机浏览器无法查看错误信息
 - 可以使用传入不同函数以实现美观的错误提示。
+### 持久化
+- 使用sessionStorage进行信息存储
+- session级别
 
 ## 如何使用
 1. git clone git@github.com:xkelveinx666/tentcoo-frontend-framework.git

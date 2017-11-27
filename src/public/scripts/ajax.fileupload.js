@@ -142,7 +142,11 @@ const ajaxFileUpload = ({
     },
     failFunc = (err) => {
         if (err) {
-            console.log(err);
+            if (err.get && err.get("message")) {
+                alert(err.get("message"));
+            } else {
+                alert(err);
+            }
         } else {
             error("请检查网络连接，或尝试刷新页面");
         }

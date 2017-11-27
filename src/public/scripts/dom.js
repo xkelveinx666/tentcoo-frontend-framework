@@ -43,7 +43,7 @@ class Dom {
         if (typeof (attrValue) !== 'string') {
             error(attrValue + " is not a string in setAttr function");
         }
-        if (this[attrName]) {
+        if (this.dom[attrName]) {
             this.dom[attrName] = attrValue;
         } else {
             this.dom.setAttribute(attrName, attrValue);
@@ -73,6 +73,7 @@ class Dom {
         });
         let className = this.className + ' ' + newClassName;
         this.className = className;
+        this.updateNode();
     }
     removeClassName(existClassName) {
         if (typeof (existClassName) !== 'string') {

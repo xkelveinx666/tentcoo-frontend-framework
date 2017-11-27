@@ -16,10 +16,9 @@ class Spring {
             element = new Dom(matchElement[0]);
         } else {
             element = [];
-            const nodeListArray = Array.from(matchElement);
-            nodeListArray.forEach((node) => {
-                element.push(new Dom(node));
-            });
+            for (let index = 0, len = matchElement.length; index < len; index++) {
+                element.push(new Dom(matchElement[index]));
+            }
         }
         this.container.set(elementInfo, element);
         return element;

@@ -15,7 +15,11 @@ const ajax = ({
     },
     failFunc = (err) => {
         if (err) {
-            console.log(err);
+            if (err.get && err.get("message")) {
+                alert(err.get("message"));
+            } else {
+                alert(err);
+            }
         } else {
             error("请检查网络连接，或尝试刷新页面");
         }
@@ -26,37 +30,35 @@ const ajax = ({
         return;
     }
     contentType = getContentType(contentType);
-    const requestBody = {
-        "method": type,
-        "body": param
-    };
+    const xhr = new XMLHttpRequest();
+    xhr.open(type, encodeURI(url), async);
     if (contentType) {
-        requestBody.headers = {
-            "Content-Type": contentType,
-        };
+        xhr.setRequestHeader("Content-Type", contentType);
     }
-    const request = new Request(url, requestBody);
-    fetch(request)
-        .then((response) => {
-            if (response.ok) {
-                return response.text();
-            } else {
-                error('fail fetch ' + url);
-            }
-        }).then((text) => {
-            try {
-                const pojo = new POJO(text);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                const responseText = decodeURI(xhr.responseText);
+                let pojo;
+                try {
+                    pojo = new POJO(responseText);
+                } catch (JSONPraseError) {
+                    acceptFunc(responseText);
+                }
                 if (pojo.get("status") === "accept") {
                     acceptFunc(pojo);
                 } else {
                     failFunc(pojo);
                 }
-            } catch (JSONPraseError) {
-                acceptFunc(text);
+            } else {
+                failFunc();
             }
-        }).catch((errorDesc) => {
-            failFunc(errorDesc);
-        });
+        }
+    }
+    xhr.onerror = () => {
+        failFunc();
+    }
+    xhr.send(param);
 };
 
 export default ajax;
