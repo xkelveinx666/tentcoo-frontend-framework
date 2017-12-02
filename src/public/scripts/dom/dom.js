@@ -1,9 +1,9 @@
-import isDom from './is_dom';
-import support from './event_support';
-import error from './error';
-import isTextBox from './is_text_box';
-import isFileDom from './is_file_dom';
-import isInput from './is_input';
+import isDom from 'judgement/is_dom';
+import support from '../dom/event_support';
+import error from 'error';
+import isTextBox from 'judgement/is_text_box';
+import isFileDom from 'judgement/is_file_dom';
+import isInput from 'judgement/is_input';
 
 class Dom {
     constructor(dom) {

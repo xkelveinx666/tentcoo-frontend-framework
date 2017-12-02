@@ -1,5 +1,5 @@
-import Dom from './dom';
-import error from './error';
+import Dom from 'dom';
+import error from 'error';
 
 class POJO {
     constructor(form) {

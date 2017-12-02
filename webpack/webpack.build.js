@@ -6,15 +6,24 @@ const es3ifyPlugin = require('es3ify-webpack-plugin');
 const config = {
     module: {
         rules: [{
-            test: /\.scss$/,
+            test: /\.(scss|css)$/,
             use: extractTextPlugin.extract({
                 fallback: "style-loader",
-                use: ["css-loader", {
+                use: [{
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                        alias: {
+                            "public": "../../../public",
+                            "img": "../../../public/images",
+                        }
+                    },
+                }, {
                     loader: 'postcss-loader',
                     options: {
                         config: {
                             path: path.resolve(__dirname, "webpack", "postcss.config.js")
-                        }
+                        },
                     }
                 }, "sass-loader"],
                 publicPath: '../',
@@ -23,12 +32,7 @@ const config = {
     },
     plugins: [
         new extractTextPlugin({
-            filename: "css/[name].[contenthash].css"
-        }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"building"'
-            }
+            filename: "css/[name].css"
         }),
         new es3ifyPlugin(),
     ],

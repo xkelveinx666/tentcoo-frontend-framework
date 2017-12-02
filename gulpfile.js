@@ -14,7 +14,7 @@ let browserSync = require("browser-sync").create();
 const loadingConfig = () => {
     global.path = require('path'),
         global.common = require('./config/common_config'),
-        global.entries = require('./config/entries_config'),
+        global.entries = require('./config/entries_config').entries,
         global.pages = require('./config/pages_config'),
         global.webpack = require('webpack'),
         global.browserSync = browserSync;

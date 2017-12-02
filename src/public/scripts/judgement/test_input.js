@@ -1,5 +1,5 @@
-import Dom from './dom';
-import error from './error';
+import Dom from 'dom';
+import error from 'error';
 
 const emojiRegex = require('emoji-regex');
 

@@ -1,5 +1,5 @@
-import Dom from './dom';
-import $ from './selector';
+import Dom from 'dom';
+import $ from 'selector';
 export default (function () {
     const errorDialog = new Dom('div');
     window.onerror = (message, url, line) => {
@@ -7,6 +7,6 @@ export default (function () {
         p.setValue("ERROR:In line " + line + " about " + message + " from " + url);
         errorDialog.addChildTail(p);
     }
-    errorDialog.addClassName("pf l0 t0 z999 error");
+    errorDialog.addClassName("pf l0 t0 w100 tc z999 error");
     $.getElement("body").addChildFront(errorDialog);
 })()

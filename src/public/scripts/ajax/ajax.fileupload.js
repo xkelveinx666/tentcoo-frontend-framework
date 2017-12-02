@@ -1,12 +1,9 @@
-import error from "./error";
-import Dom from './dom';
-import POJO from './pojo';
-import ajax from './ajax';
-import $ from './selector';
-import isDom from './is_dom';
-import {
-    setTimeout
-} from "core-js/library/web/timers";
+import error from "error";
+import Dom from 'dom';
+import POJO from 'pojo';
+import ajax from 'ajax';
+import $ from 'selector';
+import isDom from 'judgement/is_dom';
 
 const api = {
     "File": window.File,

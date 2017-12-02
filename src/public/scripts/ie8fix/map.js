@@ -1,5 +1,3 @@
-import error from './error';
-
 if (!window.Map) {
     class Map {
         constructor() {
@@ -8,7 +6,7 @@ if (!window.Map) {
         };
         set(key, value) {
             if (typeof (key) !== 'string') {
-                error(key + " is not a string");
+                console.error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -22,7 +20,7 @@ if (!window.Map) {
         };
         get(key) {
             if (typeof (key) !== 'string') {
-                error(key + " is not a string");
+                console.error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -38,7 +36,7 @@ if (!window.Map) {
 
         has(key) {
             if (typeof (key) !== 'string') {
-                error(key + " is not a string");
+                console.error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -50,7 +48,7 @@ if (!window.Map) {
 
         delete(key) {
             if (typeof (key) !== 'string') {
-                error(key + " is not a string");
+                console.error(key + " is not a string");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 if (this.nameArray[index] === key) {
@@ -81,7 +79,7 @@ if (!window.Map) {
 
         forEach(func) {
             if (typeof (func) !== "function") {
-                error(func + " is not a function");
+                console.error(func + " is not a function");
             }
             for (let index = 0, length = this.nameArray.length; index < length; index++) {
                 func(this.valueArray[index], this.nameArray[index]);

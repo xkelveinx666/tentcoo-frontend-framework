@@ -1,19 +1,23 @@
 const webpack = global.webpack || require("webpack");
 const common = global.common || require('../config/common_config');
-const entries = global.entries || require('../config/entries_config');
+const entries = global.entries || require('../config/entries_config').entries;
 const path = global.path || require('path');
 const moduleConfig = global.module || require('./module');
 const pluginsConfig = global.pluginConfig || require('./plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const pagesConfig = global.pages || require('../config/pages_config');
+const resolve = global.resolve || require('./resolve');
+const externals = global.externals || require('./externals');
 
 const config = {
     entry: entries,
     output: {
-        filename: "js/" + "[name].bundle.js",
+        filename: "js/" + "[name].js",
         path: common.location.dist,
         publicPath: '../',
     },
+    resolve: resolve,
+    externals: externals,
     module: moduleConfig,
     plugins: pluginsConfig,
 }
@@ -33,7 +37,7 @@ let injectHTML = () => {
             filename: "html/" + page.fileName,
             template: page.filePath,
             ie8fix: common.templateDefault.ie8fix,
-            chunks: page.chunks,
+            chunks: ['common', ...page.chunks],
             initConfig: page.initConfig,
             cache: true,
         });

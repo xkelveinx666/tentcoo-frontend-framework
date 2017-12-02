@@ -1,6 +1,6 @@
-import Dom from './dom';
-import error from './error';
-import isDom from './is_dom';
+import Dom from 'dom';
+import error from 'error';
+import isDom from 'judgement/is_dom';
 
 class Spring {
     constructor() {

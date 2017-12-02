@@ -2,13 +2,13 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.18
-- 错误提示修改样式
-- 前端数据库改成sessionStorage，持久化改到缓存
-- ajax错误时默认函数添加更多情况
-- iOS的Safari下可能会出现sessionStorage不支持的错误
-- 在body添加ontouchstart修复iOS下hover无法正确使用的问题
-- 部分手机浏览器不支持Array.from(),于是改回成传统的遍历操作
+v1.30
+- 修改public文件夹下js文件结构
+- 在webpack中添加alias，让文件加载路径更简洁准确,包括js与css
+- (暂定)html的alias打算使用art-template添加
+- 添加CommonsChunkPlugin提取公共模块
+- 添加ProvidePlugin暴露全局$为公用函数
+- 添加jQuery,bootstrap支持
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
@@ -51,6 +51,15 @@ v1.18
 ### 持久化
 - 使用sessionStorage进行信息存储
 - session级别
+### 文件结构
+- public文件夹存放通用的文件
+- config包括ie8兼容用的entry文件,第三方或通用函数的entry
+- 所有图片放置与images内，并且可使用"public/images/\*"或"img/\*"路径加载图片
+- 常用函数分类并放置于scripts内，部分函数以可直接加载例如"dom","selector"
+### 公共模块
+- public文件夹下加载网站级公用的js,css文件
+- 全局jQuery
+- Bootstrap
 
 ## 如何使用
 1. git clone git@github.com:xkelveinx666/tentcoo-frontend-framework.git

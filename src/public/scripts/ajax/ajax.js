@@ -1,6 +1,6 @@
-import error from './error';
-import getContentType from './content_type';
-import POJO from './pojo';
+import error from 'error';
+import getContentType from 'content_type';
+import POJO from 'pojo';
 
 const ajax = ({
     url,

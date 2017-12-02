@@ -6,11 +6,14 @@ const hotMiddle = 'webpack-hot-middleware/client?reload=true';
 
 //自动扫描，同步读取config文件中的entry文件
 let entries = {};
+let privateEntries = [];
 let loadEntries = () => {
     const entriesFilesPaths = [common.location.private, common.publicPath.config];
-    entriesFilesPaths.forEach(function(entriesFilePath) {
-        var files = glob.sync(path.resolve(entriesFilePath, "**/**/entry.*.js"), { nodir: true })
-        files.forEach(function(file) {
+    entriesFilesPaths.forEach(function (entriesFilePath) {
+        var files = glob.sync(path.resolve(entriesFilePath, "**/**/entry.*.js"), {
+            nodir: true
+        })
+        files.forEach(function (file) {
             let pathName = file.toString();
             let fileName = pathName.substring(pathName.lastIndexOf("/") + 1);
             let chunkName = fileName.substring(fileName.indexOf(".") + 1, fileName.lastIndexOf("."));
@@ -19,12 +22,18 @@ let loadEntries = () => {
             } else {
                 entries[chunkName] = pathName;
             }
+            if (entriesFilePath === common.location.private) {
+                privateEntries.push(chunkName);
+            }
         })
     });
 }
 
-(function() {
+(function () {
     loadEntries();
 })();
 
-module.exports = entries;
+module.exports = {
+    "entries": entries,
+    "privateEntries": privateEntries
+};

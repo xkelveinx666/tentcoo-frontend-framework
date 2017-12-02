@@ -6,12 +6,16 @@ const path = global.path || require('path');
 const config = {
     module: {
         rules: [{
-            test: /\.scss$/,
+            test: /\.(scss|css)$/,
             use: ['style-loader',
                 {
                     loader: 'css-loader',
                     options: {
-                        importLoaders: 1
+                        importLoaders: 1,
+                        alias: {
+                            "public": "../../../public",
+                            "img": "../../../public/images",
+                        }
                     },
                 }, {
                     loader: 'postcss-loader',
