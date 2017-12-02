@@ -11,17 +11,13 @@ const config = {
                 {
                     loader: 'css-loader',
                     options: {
-                        importLoaders: 1,
-                        alias: {
-                            "public": "../../../public",
-                            "img": "../../../public/images",
-                        }
+                        root: path.resolve(__dirname, "../src/public"),
                     },
                 }, {
                     loader: 'postcss-loader',
                     options: {
                         config: {
-                            path: path.resolve(__dirname, "webpack", "postcss.config.js")
+                            path: path.resolve(__dirname, "postcss.config.js")
                         }
                     }
                 }, {

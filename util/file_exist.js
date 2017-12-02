@@ -1,3 +1,5 @@
+const fs = global.fs || require('fs');
+
 const fileExist = (path) => {
     try {
         fs.accessSync(path);

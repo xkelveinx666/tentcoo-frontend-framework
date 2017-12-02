@@ -2,13 +2,11 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.30
-- 修改public文件夹下js文件结构
-- 在webpack中添加alias，让文件加载路径更简洁准确,包括js与css
-- (暂定)html的alias打算使用art-template添加
-- 添加CommonsChunkPlugin提取公共模块
-- 添加ProvidePlugin暴露全局$为公用函数
-- 添加jQuery,bootstrap支持
+v1.31
+- 修复判断文件是否存忘记导入path的错误
+- 修改postcss配置,将无用的font-magician去除
+- 添加css-mqpacker以合并媒体查询器
+- 添加cssnano，压缩css
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
@@ -60,6 +58,11 @@ v1.30
 - public文件夹下加载网站级公用的js,css文件
 - 全局jQuery
 - Bootstrap
+### Postcss
+- 压缩css
+- 合并媒体查询器
+- 常见兼容性修复
+- 生车雪碧图
 
 ## 如何使用
 1. git clone git@github.com:xkelveinx666/tentcoo-frontend-framework.git
