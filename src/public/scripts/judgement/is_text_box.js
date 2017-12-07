@@ -1,5 +1,8 @@
 export default (dom) => {
-    const tagName = dom.tagName.toString().toLowerCase();
+    const tagName = (dom.tagName || "document").toString().toLowerCase();
+    if (tagName === "document") {
+        return false;
+    }
     let type = "undefined";
     if (tagName === "input" && dom.type) {
         type = dom.type.toString().toLowerCase();

@@ -2,11 +2,13 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.31
-- 修复判断文件是否存忘记导入path的错误
-- 修改postcss配置,将无用的font-magician去除
-- 添加css-mqpacker以合并媒体查询器
-- 添加cssnano，压缩css
+v1.32
+- 去除无效雪碧图插件post-sprite
+- 修改dom类addListener，能传入参数用于取消默认事件
+- 添加常用滚动函数，快速禁用，启用滚动
+- 修改对dom的判断以支持传入window的情况
+- 修复忘记使用updateNode();
+- 添加对enhance的alias
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。

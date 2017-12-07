@@ -7,11 +7,6 @@ module.exports = ({
 }) => ({
     parser: file.extname === '.scss' ? 'postcss-scss' : false,
     plugins: {
-        "postcss-sprites": {
-            spritePath: path.resolve(__dirname, '../dist/img/sprite.png'),
-            retina: true,
-            outputDimensions: true
-        },
         'postcss-csssimple': true,
         'autoprefixer': env == 'production' ? true : false,
         "css-mqpacker": true,

@@ -1,4 +1,4 @@
 export default (dom) => {
-    const tagName = dom.tagName.toString().toLowerCase();
+    const tagName = (dom.tagName || "document").toString().toLowerCase();
     return tagName === 'input';
 }

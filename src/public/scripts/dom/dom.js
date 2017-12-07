@@ -13,12 +13,12 @@ class Dom {
         if (typeof (dom) === 'string') {
             dom = document.createElement(dom);
         }
-        if (!isDom(dom)) {
+        if (dom !== window && dom !== document && !isDom(dom)) {
             error(dom + " is no the type of dom");
         }
         this.dom = dom;
         this.className = dom.className;
-        this.tagName = dom.tagName.toLowerCase();
+        this.tagName = (dom.tagName || "document").toLowerCase();
         this.id = dom.id;
         this.value = dom.innerHTML;
         if (isTextBox(dom)) {
@@ -33,7 +33,7 @@ class Dom {
         if (typeof (attrName) !== 'string') {
             error(attrName + " is not a string in getAttr function");
         }
-        return this.dom.getAttribute(attrName) || this.dom[attrName];
+        return this.dom[attrName] | (this.dom.getAttribute ? this.dom.getAttribute(attrName) : undefined);
     }
     setAttr(attrName, attrValue) {
         if (typeof (attrName) !== 'string') {
@@ -58,22 +58,25 @@ class Dom {
             error(newClassName + " is illegal in setClassName function");
         }
         this.className = newClassName;
+        this.updateNode();
     }
     addClassName(newClassName) {
         if (typeof (newClassName) !== 'string') {
             error(newClassName + " is illegal in addClassName function");
         }
         const classNameArray = this.className.split(' ');
-        classNameArray.forEach((name) => {
-            if (newClassName === name.trim()) {
-                console.log(newClassName + " has existed in addClassName function");
-                //提前结束
-                return true;
-            }
-        });
-        let className = this.className + ' ' + newClassName;
-        this.className = className;
-        this.updateNode();
+        //使用some代替forEach防止回调无法正确停止
+        if (!classNameArray.some((name) => {
+                if (newClassName === name.trim()) {
+                    // console.log(newClassName + " has existed in addClassName function");
+                    //提前结束
+                    return true;
+                }
+            })) {
+            let className = this.className + ' ' + newClassName;
+            this.className = className;
+            this.updateNode();
+        }
     }
     removeClassName(existClassName) {
         if (typeof (existClassName) !== 'string') {
@@ -87,6 +90,7 @@ class Dom {
             }
         });
         this.className = newClassName;
+        this.updateNode();
     }
     getDom() {
         return this.dom;
@@ -223,19 +227,26 @@ class Dom {
             this.dom.innerHTML = this.value;
         }
     }
-    addListener(eventName, callback) {
+    addListener(eventName, callback, isPreventDefault = false) {
         if (eventName === 'input' && !support('input')) {
             if (support("propertychange")) {
-                this.addListener('propertychange', callback);
+                this.addListener('propertychange', callback, isPreventDefault);
                 return;
             } else {
-                this.addListener('keydown', callback);
+                this.addListener('keydown', callback, isPreventDefault);
                 return;
+            }
+        }
+        if (isPreventDefault) {
+            this.dom["on" + eventName] = () => {
+                return false;
             }
         }
         if (this.dom.addEventListener) {
             this.dom.addEventListener(eventName, (e) => {
-                e.preventDefault();
+                if (isPreventDefault) {
+                    e.preventDefault();
+                }
                 window.event ? window.event.cancelBubble = true : e.stopPropagation();
                 const event = e || window.event;
                 const target = event.target || event.srcElement;
@@ -248,6 +259,10 @@ class Dom {
             }, false);
         } else if (this.dom.attachEvent) {
             this.dom.attachEvent("on" + eventName, (e) => {
+                if (isPreventDefault) {
+                    e.preventDefault();
+                    return false;
+                }
                 window.event ? window.event.cancelBubble = true : e.stopPropagation();
                 const event = e || window.event;
                 const target = event.target || event.srcElement;

@@ -12,6 +12,7 @@ const resolve = {
     "error-dialog": path.resolve(__dirname, '../src/public/scripts/enhance/error_dialog.js'),
     "pojo": path.resolve(__dirname, '../src/public/scripts/ajax/pojo.js'),
     "ajax": path.resolve(__dirname, '../src/public/scripts/ajax/ajax.js'),
+    "enhance": path.resolve(__dirname, '../src/public/scripts/enhance'),
   },
 };
 
