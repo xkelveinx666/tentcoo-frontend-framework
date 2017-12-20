@@ -1,11 +1,11 @@
 import error from 'error';
-import getContentType from 'content_type';
+import getContentType from './content_type';
 import POJO from 'pojo';
 
 const ajax = ({
     url,
     param,
-    type,
+    type = "GET",
     contentType = "form",
     async = true,
     acceptFunc = (data) => {
@@ -28,6 +28,9 @@ const ajax = ({
     if (!url) {
         error("url is null");
         return;
+    }
+    if (param && param instanceof POJO) {
+        param.changeType(contentType);
     }
     contentType = getContentType(contentType);
     const xhr = new XMLHttpRequest();

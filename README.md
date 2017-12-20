@@ -2,13 +2,14 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.32
-- 去除无效雪碧图插件post-sprite
-- 修改dom类addListener，能传入参数用于取消默认事件
-- 添加常用滚动函数，快速禁用，启用滚动
-- 修改对dom的判断以支持传入window的情况
-- 修复忘记使用updateNode();
-- 添加对enhance的alias
+v1.33
+- 完善POJO类
+- 传参形式包括无参,json,表单
+- 修复dom类的部分逻辑错误
+- 完善getChildren()方法
+- 新增页面操作函数集
+- 对HTML5的input标签支持
+- 添加flex_ie,art_template(暂未整合)
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
@@ -31,6 +32,11 @@ v1.32
 - ajax传入函数使用POJO类，类似formdata能快速进行参数的打包与发送
 - content-type类以提供更快的匹配所需的header说明
 - 不主动创建Request保证了iOS浏览器的成功提交
+- 修改参数判断,可以传入无参数或非POJO类型
+### POJO
+- 无规则对象类似json
+- 用于发送及接受请求时的中间函数
+- 可以转为表单和json所用的参数形式
 ### 文件上传
 - 使用ajax.fileupload.js文件用于文件上传，使用统一的接口
 - async参数用于决定同步或异步
@@ -64,7 +70,6 @@ v1.32
 - 压缩css
 - 合并媒体查询器
 - 常见兼容性修复
-- 生车雪碧图
 
 ## 如何使用
 1. git clone git@github.com:xkelveinx666/tentcoo-frontend-framework.git

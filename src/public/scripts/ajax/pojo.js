@@ -4,6 +4,7 @@ import error from 'error';
 class POJO {
     constructor(form) {
         this.data = new Map();
+        this.type = "form";
         if (form) {
             if (typeof (form) === 'string' && JSON.parse(form)) {
                 this.strToMap(form);
@@ -25,6 +26,15 @@ class POJO {
             });
         }
     }
+    changeType(type) {
+        this.type = type;
+    }
+    setType(type) {
+        this.type = type;
+    }
+    getType(type) {
+        return this.type;
+    }
     get(key) {
         if (typeof (key) !== 'string') {
             error(key + " is a string");
@@ -41,11 +51,19 @@ class POJO {
         return this.data.forEach(func);
     }
     toString() {
-        let result = '';
-        this.data.forEach((value, key) => {
-            result += `${key}=${encodeURIComponent(value)}&`;
-        });
-        return result.substring(0, result.length - 1);
+        if (this.type === 'form') {
+            let result = '';
+            this.data.forEach((value, key) => {
+                result += `${key}=${encodeURIComponent(value)}&`;
+            });
+            return result.substring(0, result.length - 1);
+        } else if (this.type = 'json') {
+            let result = {};
+            this.data.forEach((value, key) => {
+                result[key] = value;
+            });
+            return JSON.stringify(result);
+        }
 
     }
     getFormData() {

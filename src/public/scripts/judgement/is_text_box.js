@@ -7,5 +7,5 @@ export default (dom) => {
     if (tagName === "input" && dom.type) {
         type = dom.type.toString().toLowerCase();
     }
-    return tagName === 'input' && (type === "text" || type === "password") || tagName === 'textarea';
+    return tagName === 'input' && (type === "text" || type === "password" || type === "date" || type === "time") || tagName === 'textarea';
 }

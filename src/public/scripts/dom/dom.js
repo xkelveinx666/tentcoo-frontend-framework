@@ -33,7 +33,7 @@ class Dom {
         if (typeof (attrName) !== 'string') {
             error(attrName + " is not a string in getAttr function");
         }
-        return this.dom[attrName] | (this.dom.getAttribute ? this.dom.getAttribute(attrName) : undefined);
+        return this.dom[attrName] || (this.dom.getAttribute ? this.dom.getAttribute(attrName) : undefined);
     }
     setAttr(attrName, attrValue) {
         if (typeof (attrName) !== 'string') {
@@ -112,25 +112,24 @@ class Dom {
                     if (selector.charAt(0) === '.') {
                         if (child.className === selector.substring(1, selector.length)) {
                             children.push(new Dom(child));
-                            continue;
                         }
                     } else if (selector.charAt(0) === '#') {
                         if (child.id === selector.substring(1, selector.length)) {
                             children.push(new Dom(child));
-                            continue;
                         }
                     } else {
-                        if (child.tagName === selector.substring(1, selector.length)) {
+                        if (child.tagName.toLowerCase() === selector.substring(0, selector.length)) {
                             children.push(new Dom(child));
-                            continue;
                         }
                     }
-                    error(selector + " has not matched element in " + this.tagName);
                 } else {
                     children.push(new Dom(child));
                 }
             }
             child = child.nextSibling;
+        }
+        if (children.length === 0) {
+            error(selector + " has not matched element in " + this.tagName);
         }
         return children;
     }
@@ -167,7 +166,7 @@ class Dom {
         this.getParent().getDom().replaceChild(newNode.getDom(), this.getDom());
     }
     setValue(newValueStr) {
-        if (typeof (newValueStr) !== 'string') {
+        if (typeof (newValueStr) !== 'string' && typeof (newValueStr) !== 'number') {
             error(newValueStr + " is illegal for value in setValue")
         }
         if (newValueStr !== this.value) {
