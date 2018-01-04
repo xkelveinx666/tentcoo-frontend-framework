@@ -2,21 +2,25 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.33
-- 完善POJO类
-- 传参形式包括无参,json,表单
-- 修复dom类的部分逻辑错误
-- 完善getChildren()方法
-- 新增页面操作函数集
-- 对HTML5的input标签支持
-- 添加flex_ie,art_template(暂未整合)
+v1.40
+- 完善POJO类对ajax传回对象的对应转换，能自动转为数组，字符串
+- 添加自动扫描添加事件函数
+- 对于添加了select-option,select-label的标签，能快速生成下拉列表
+- 对于添加了show,close属性的标签，能快速打开关闭弹窗
+- 修复IE6下常见ajax问题,增加了不支持函数操作的判断
+- 改善dom操作类的操作细节
+- 使用sizzle作为选择器修复IE6的选择器bug
+- 使用Reset.css代替Bootstrap.reboot
+- 默认不加载jQuery
+- 统一加载ie8fix.js，因为高级版IE仍然不支持部分ES5,ES6操作且IE10,11不支持条件注释
+- 改用yarn
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
 同时支持CSS使用SCSS,HTML使用art-template,JS使用ES6
 
 ## 兼容性
-已经确认常用兼容性到IE8+
+已经确认常用兼容性到IE6+
 
 ## 特点
 ### JavaScript
@@ -33,6 +37,7 @@ v1.33
 - content-type类以提供更快的匹配所需的header说明
 - 不主动创建Request保证了iOS浏览器的成功提交
 - 修改参数判断,可以传入无参数或非POJO类型
+- POJO类对ajax传回对象的对应转换，能自动转为数组，字符串
 ### POJO
 - 无规则对象类似json
 - 用于发送及接受请求时的中间函数
@@ -70,6 +75,10 @@ v1.33
 - 压缩css
 - 合并媒体查询器
 - 常见兼容性修复
+### 标记自动添加事件
+- 发挥了HTML标记的特点快速添加事件
+- 对于添加了select-option,select-label的标签，能快速生成下拉列表
+- 对于添加了show,close属性的标签，能快速打开关闭弹窗
 
 ## 如何使用
 1. git clone git@github.com:xkelveinx666/tentcoo-frontend-framework.git

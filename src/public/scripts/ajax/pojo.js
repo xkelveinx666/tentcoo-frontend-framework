@@ -43,9 +43,12 @@ class POJO {
     }
     append(key, value) {
         if (typeof (key) !== 'string') {
-            error(key + " is a string");
+            error(key + " is not a string");
         }
-        this.data.set(key, value);
+        if(null != value && 'string' === typeof(value)) {
+            value = value.toString().trim();
+        }
+        this.data.set(key.trim(), value);
     }
     forEach(func) {
         return this.data.forEach(func);
@@ -79,7 +82,18 @@ class POJO {
     strToMap(json) {
         const jsonObj = JSON.parse(json);
         for (let key in jsonObj) {
-            this.append(key, jsonObj[key]);
+            if('string' === typeof (jsonObj[key])) {
+                const jsonStr = jsonObj[key].toString().trim();
+                if(jsonStr.charAt(0) == '[') {
+                    this.append(key, jsonStr.slice(1, -1).split(','));
+                } else if(jsonStr.charAt(0) == '{'){
+                    this.append(key, JSON.parse(jsonStr));
+                } else {
+                    this.append(key, jsonStr);
+                }
+            } else {
+                this.append(key, jsonObj[key]);
+            }
         }
     }
 }

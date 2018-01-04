@@ -2,8 +2,7 @@ import error from "error";
 import Dom from 'dom';
 import POJO from 'pojo';
 import ajax from 'ajax';
-import $ from 'selector';
-import isDom from 'judgement/is_dom';
+import selector from 'selector';
 
 const api = {
     "File": window.File,
@@ -179,7 +178,7 @@ const ajaxFileUpload = ({
         })
     } else {
         //创建表单并用iframe实现提交不刷新
-        const body = $.getElement("body");
+        const body = selector.getElement("body");
         const form = createForm(param, fileDom, multipart, type, url);
         const iframe = createIframe(body, form);
         iframe.addListener("load", () => {

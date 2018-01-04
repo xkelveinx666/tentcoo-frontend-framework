@@ -42,7 +42,12 @@ gulp.task('dev', () => {
     let serverConfig = loadingConfig();
     let webpackConfig = assign(serverConfig.devConfig, serverConfig.originalConfig);
     let bundler = webpack(webpackConfig);
-    const middlewareProxy = proxy('/new_seat/', {
+    const middlewareProxy1 = proxy('/clock/', {
+        "target": 'http://10.11.3.199:8080',
+        "secure": false,
+        "changeOrigin": true,
+    });
+    const middlewareProxy2 = proxy('/seat/', {
         "target": 'http://10.11.3.199:8080',
         "secure": false,
         "changeOrigin": true,
@@ -53,7 +58,8 @@ gulp.task('dev', () => {
             middleware: [
                 webpackDevMiddleware(bundler, serverConfig.devServerConfig),
                 webpackHotMiddleware(bundler, serverConfig.hotMiddleware),
-                middlewareProxy,
+                middlewareProxy1,
+                middlewareProxy2
             ],
         },
         online: false,

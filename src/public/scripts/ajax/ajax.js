@@ -6,8 +6,9 @@ const ajax = ({
     url,
     param,
     type = "GET",
-    contentType = "form",
+    contentType = "form", original = false,
     async = true,
+    cache = true,
     acceptFunc = (data) => {
         if (data) {
             console.log(data);
@@ -33,35 +34,58 @@ const ajax = ({
         param.changeType(contentType);
     }
     contentType = getContentType(contentType);
-    const xhr = new XMLHttpRequest();
+    const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHttp");
+    type = type.toUpperCase();
     xhr.open(type, encodeURI(url), async);
     if (contentType) {
         xhr.setRequestHeader("Content-Type", contentType);
     }
+    if(!cache) {
+        xhr.setRequestHeader('If-Modified-Since', '0');
+    }
     xhr.onreadystatechange = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.readyState === 4) {
             if (xhr.status === 200) {
-                const responseText = decodeURI(xhr.responseText);
-                let pojo;
-                try {
-                    pojo = new POJO(responseText);
-                } catch (JSONPraseError) {
-                    acceptFunc(responseText);
+                if(original) {
+                    acceptFunc(xhr.responseText);
+                    return;
                 }
-                if (pojo.get("status") === "accept") {
-                    acceptFunc(pojo);
+                const responseText = decodeURI(xhr.responseText);
+                if(responseText.indexOf("{") == -1) {
+                    acceptFunc(responseText);
                 } else {
-                    failFunc(pojo);
+                    let pojo = null;
+                    try {
+                        pojo = new POJO(responseText);
+                    } catch (JSONPraseError) {
+                        acceptFunc(responseText);
+                        return;
+                    }
+                    if (pojo.get("status") === "accept") {
+                        acceptFunc(pojo);
+                    } else {
+                        failFunc(pojo);
+                    }
                 }
             } else {
                 failFunc();
             }
         }
     }
-    xhr.onerror = () => {
-        failFunc();
+    if(xhr.onerror) {
+        xhr.onerror = () => {
+            failFunc();
+        }
     }
-    xhr.send(param);
+    if(param) {
+        if(param instanceof POJO) {
+            xhr.send(param.toString());
+        } else {
+            xhr.send(param);
+        }
+    } else {
+        xhr.send();
+    }
 };
 
 export default ajax;

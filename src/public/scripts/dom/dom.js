@@ -16,6 +16,14 @@ class Dom {
         if (dom !== window && dom !== document && !isDom(dom)) {
             error(dom + " is no the type of dom");
         }
+        this.dom=null;
+        this.className="";
+        this.tagName="";
+        this.id="";
+        this.value="";
+        this.initiate(dom);
+    };
+    initiate(dom) {
         this.dom = dom;
         this.className = dom.className;
         this.tagName = (dom.tagName || "document").toLowerCase();
@@ -28,7 +36,7 @@ class Dom {
             this.value = dom.value;
             this.changeBind();
         }
-    };
+    }
     getAttr(attrName) {
         if (typeof (attrName) !== 'string') {
             error(attrName + " is not a string in getAttr function");
@@ -49,9 +57,8 @@ class Dom {
             this.dom.setAttribute(attrName, attrValue);
         }
     }
-
     getClassName() {
-        return this.className;
+        return this.dom.className;
     }
     setClassName(newClassName) {
         if (typeof (newClassName) !== 'string') {
@@ -163,7 +170,21 @@ class Dom {
         if (!newNode instanceof Dom) {
             error(newNode + "is not a Dom");
         }
-        this.getParent().getDom().replaceChild(newNode.getDom(), this.getDom());
+        if(!newNode) {
+            return false;
+        }
+        //使用父结点隐藏，减少重绘和重排
+        this.getParent().hide();
+        const readyReplaceNewNode = newNode.clone(true);
+        if(this.isHide()) {
+            readyReplaceNewNode.hide();
+        } else {
+            readyReplaceNewNode.show();
+        }
+        this.getParent().addChildTail(readyReplaceNewNode);
+        this.getParent().getDom().replaceChild(readyReplaceNewNode.getDom(), this.getDom());
+        this.initiate(readyReplaceNewNode.getDom());
+        this.getParent().show();
     }
     setValue(newValueStr) {
         if (typeof (newValueStr) !== 'string' && typeof (newValueStr) !== 'number') {
@@ -203,11 +224,17 @@ class Dom {
         }
         return new Dom(node);
     }
+    isHide() {
+        const className = this.getClassName();
+        return className.indexOf("nd") >= 0|| className.indexOf("hide") >= 0;
+    }
     hide() {
+        this.addClassName("hide");
         this.addClassName("nd");
         this.updateNode();
     }
     show() {
+        this.removeClassName("hide");
         this.removeClassName("nd");
         this.updateNode();
     }
@@ -258,10 +285,6 @@ class Dom {
             }, false);
         } else if (this.dom.attachEvent) {
             this.dom.attachEvent("on" + eventName, (e) => {
-                if (isPreventDefault) {
-                    e.preventDefault();
-                    return false;
-                }
                 window.event ? window.event.cancelBubble = true : e.stopPropagation();
                 const event = e || window.event;
                 const target = event.target || event.srcElement;
@@ -271,6 +294,9 @@ class Dom {
                     'event': event,
                     'value': value,
                 });
+                if (isPreventDefault) {
+                    return false;
+                }
             });
         } else {
             this.dom['on' + eventName] = callback;

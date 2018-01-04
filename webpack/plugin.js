@@ -1,5 +1,4 @@
 const webpack = global.webpack || require('webpack');
-const entries = global.entries || require('../config/entries_config').entries;
 const privateEntries = global.privateEntries || require('../config/entries_config').privateEntries;
 
 const plugins = [

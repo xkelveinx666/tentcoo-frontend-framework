@@ -29,18 +29,23 @@ module.exports = config;
 let injectHTML = () => {
     pagesConfig.forEach(function (page) {
         let htmlConfig = new htmlWebpackPlugin({
-            title: page.title,
-            icon: common.templateDefault.icon,
-            copyright: common.templateDefault.copyright,
-            descriptions: page.description,
-            keywords: page.keywords,
-            filename: "html/" + page.fileName,
-            template: page.filePath,
-            ie8fix: common.templateDefault.ie8fix,
-            chunks: ['common', ...page.chunks],
-            initConfig: page.initConfig,
-            cache: true,
-        });
+                title: page.title,
+                icon: common.templateDefault.icon,
+                copyright: common.templateDefault.copyright,
+                descriptions: page.description,
+                keywords: page.keywords,
+                filename: "html/" + page.fileName,
+                template: page.filePath,
+                ie8fix: common.templateDefault.ie8fix,
+                chunks: ['common', ...page.chunks],
+                initConfig: page.initConfig,
+                cache: true,
+                minify: {
+                    removeComments: true,
+                    collapseWhitespace: false
+                }
+            })
+        ;
         config.plugins.push(htmlConfig);
     });
 };

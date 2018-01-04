@@ -51,5 +51,8 @@
     "webpack-dev-middleware": "^1.11.0",
     "webpack-dev-server": "^2.5.1",
     "webpack-hot-middleware": "^2.18.2"
+  },
+  "dependencies": {
+    "sizzle": "^2.3.3"
   }
 }

@@ -1,12 +1,14 @@
 import Dom from 'dom';
 import $ from 'selector';
-export default (function () {
+(function () {
     const errorDialog = new Dom('div');
     window.onerror = (message, url, line) => {
         const p = new Dom('p');
-        p.setValue("ERROR:In line " + line + " about " + message + " from " + url);
+        p.setValue("页面出现异常，请刷新重试或更换尝试更换浏览器");
         errorDialog.addChildTail(p);
+        errorDialog.show();
     }
     errorDialog.addClassName("pf l0 t0 w100 tc z999 error");
-    $.getElement("body").addChildFront(errorDialog);
+    errorDialog.hide();
+    $.getElement("body")[0].addChildFront(errorDialog);
 })()

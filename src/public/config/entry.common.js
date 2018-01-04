@@ -1,6 +1,7 @@
-import errorDialog from 'error-dialog';
-import 'public/styles/general.scss';
-import 'bootstrap/dist/css/bootstrap.css'
+import 'error-dialog';
+import '../styles/general.scss';
+import "public/styles/reset.css";
 
-import 'jquery';
-import 'bootstrap/dist/js/bootstrap.js'
+import "enhance/select_option_bind";
+import "enhance/show_close_bind";
+import "enhance/img_not_drag";
