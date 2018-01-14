@@ -15,8 +15,7 @@ const plugins = [
         name: "common",
         filename: "js/" + "common.js",
         chunks: privateEntries
-    })
-
+    }),
 ]
 
 module.exports = plugins;

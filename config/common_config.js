@@ -35,7 +35,7 @@ const privatePath = {
 
 const templateDefault = {
     "copyright": "本页版权归天高科技工作室所有。All Rights Reserved",
-    "ie8fix": `<script src="../js/ie8fix.js"></script>`
+    "ie8fix": `<!--[if lt IE 10]><script src="../js/ie8fix.js"></script><![endif]-->`
 }
 
 module.exports = {

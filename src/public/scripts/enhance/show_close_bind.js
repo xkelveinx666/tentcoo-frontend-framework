@@ -1,7 +1,10 @@
 import selector from "selector";
 import error from "error";
 
-//使用闭包＋setTimeout异步加载提高加载速度
+/**
+ * 使用闭包＋setTimeout异步加载提高加载速度
+ * 使用show,close标签属性快速创建弹框
+ */
 setTimeout(() => {
     const arr = [];
     const closeArray = selector.getElement("[close]");

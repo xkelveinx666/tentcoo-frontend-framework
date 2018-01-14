@@ -1,5 +1,11 @@
 import error from 'error';
 
+/**
+ * 前端数据库
+ * 正在完善中
+ * 核心使用sessionStorage
+ * 准备使用cookie作为低版本IE兼容方案
+ */
 class DataBase {
     constructor() {
         // this.map = new Map();

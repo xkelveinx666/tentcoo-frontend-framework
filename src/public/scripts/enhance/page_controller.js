@@ -1,12 +1,11 @@
-function reload() {
+/**
+ * 封装常用的页面控制操作
+ */
+
+export function reload() {
     location.reload();
 }
 
-function jump(url) {
+export function jump(url) {
     location.href = url;
-}
-
-export default {
-    "reload": reload,
-    "jump": jump
 }

@@ -2,6 +2,18 @@ import error from 'error';
 import getContentType from './content_type';
 import POJO from 'pojo';
 
+/**
+ * ajax函数 兼容至IE6
+ * @param url 请求地址
+ * @param param 请求参数
+ * @param type 请求类型, GET或POST,忽略大小写
+ * @param contentType 请求参数类型,默认为from格式，可传入json,xml,会用getContentType自动转换
+ * @param original 是否原样输出，用于非标准JSON格式的返回,默认否
+ * @param async 是否开启异步,默认是
+ * @param cache 是否开启缓存,默认是
+ * @param acceptFunc 成功的回调函数,传入参数为POJO类型
+ * @param failFunc 失败的回调函数,传入参数为POJO类型
+ */
 const ajax = ({
     url,
     param,
@@ -40,12 +52,14 @@ const ajax = ({
     if (contentType) {
         xhr.setRequestHeader("Content-Type", contentType);
     }
+    //设置缓存，用于去除IE8的自动缓存
     if(!cache) {
         xhr.setRequestHeader('If-Modified-Since', '0');
     }
     xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
+                //判断是原样返回还是转换为POJO类型返回
                 if(original) {
                     acceptFunc(xhr.responseText);
                     return;

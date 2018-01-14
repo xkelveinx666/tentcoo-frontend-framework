@@ -5,6 +5,11 @@ import isTextBox from 'judgement/is_text_box';
 import isFileDom from 'judgement/is_file_dom';
 import isInput from 'judgement/is_input';
 
+/**
+ * Dom操作类，扩展增强简化dom操作
+ * 传入标签，将新建dom结点
+ * 传入已有dom，在此dom上创建Dom对象
+ */
 class Dom {
     constructor(dom) {
         if (!dom) {
@@ -23,6 +28,7 @@ class Dom {
         this.value="";
         this.initiate(dom);
     };
+    //获取dom的信息
     initiate(dom) {
         this.dom = dom;
         this.className = dom.className;
@@ -43,6 +49,10 @@ class Dom {
         }
         return this.dom[attrName] || (this.dom.getAttribute ? this.dom.getAttribute(attrName) : undefined);
     }
+
+    /**
+     * 快速设置标签属性,尽量不用getDom
+     */
     setAttr(attrName, attrValue) {
         if (typeof (attrName) !== 'string') {
             error(attrName + " is not a string in setAttr function");
@@ -67,6 +77,7 @@ class Dom {
         this.className = newClassName;
         this.updateNode();
     }
+    //添加类型，自动判断重
     addClassName(newClassName) {
         if (typeof (newClassName) !== 'string') {
             error(newClassName + " is illegal in addClassName function");
@@ -85,6 +96,7 @@ class Dom {
             this.updateNode();
         }
     }
+    //移除已有的类名
     removeClassName(existClassName) {
         if (typeof (existClassName) !== 'string') {
             error(existClassName + " is illegal in removeClassName function");
@@ -102,6 +114,7 @@ class Dom {
     getDom() {
         return this.dom;
     }
+    //获取子元素querySelector()方式
     getChildren(selector) {
         let children = [],
             child = this.getFirstChild();
@@ -166,6 +179,15 @@ class Dom {
             this.dom.removeChild(this.getFirstChild().getDom());
         }
     }
+    //将自己从dom树中删除
+    delete() {
+        if(this.getParent()) {
+            this.getParent().removeChild(this);
+            this.dom = null;
+            delete this;
+        }
+    }
+    //替换子dom结点
     replaceNode(newNode) {
         if (!newNode instanceof Dom) {
             error(newNode + "is not a Dom");
@@ -186,6 +208,7 @@ class Dom {
         this.initiate(readyReplaceNewNode.getDom());
         this.getParent().show();
     }
+    //设置属性值，自动判断innerHTML或value
     setValue(newValueStr) {
         if (typeof (newValueStr) !== 'string' && typeof (newValueStr) !== 'number') {
             error(newValueStr + " is illegal for value in setValue")
@@ -238,6 +261,7 @@ class Dom {
         this.removeClassName("nd");
         this.updateNode();
     }
+    //更新dom结点状态(准备异步)
     updateNode() {
         if (this.dom.className !== this.className) {
             this.dom.className = this.className;
@@ -253,6 +277,14 @@ class Dom {
             this.dom.innerHTML = this.value;
         }
     }
+
+    /**
+     * 添加监听器，类似addEventListener
+     * 支持input，对IE有兼容处理(性能有较大下降注意)
+     * @param eventName
+     * @param callback 将会返回context, event, value给回调函数，防止异步信息丢失和重复创建闭包
+     * @param isPreventDefault 用于禁止默认事件，默认不禁止
+     */
     addListener(eventName, callback, isPreventDefault = false) {
         if (eventName === 'input' && !support('input')) {
             if (support("propertychange")) {
@@ -309,6 +341,7 @@ class Dom {
             this.dom.detachEvent(eventName, callback);
         }
     }
+    //原型模式，克隆dom结点，注意原dom结点必须在dom树内
     clone(deep) {
         if (deep === true) {
             return new Dom(this.getDom().cloneNode(true));

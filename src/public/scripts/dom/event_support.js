@@ -1,7 +1,7 @@
 function is(obj, type) {
     return typeof obj === type;
 }
-
+//用于判断当前浏览器是否支持某事件
 var isEventSupported = (function () {
 
     var TAGNAMES = {

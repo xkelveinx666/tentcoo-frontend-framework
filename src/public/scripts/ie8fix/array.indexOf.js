@@ -1,5 +1,5 @@
 (function() {
-    if (!Array.indexOf) {
+    if (!Array.indexOf && !Array.prototype.indexOf) {
         Array.prototype.indexOf = (pattern) => {
             let array = this;
             for (let index = 0, length = array.length; index < length; index++) {

@@ -3,6 +3,13 @@ import error from 'error';
 import isDom from 'judgement/is_dom';
 import Sizzle from "sizzle";
 
+/**
+ * selector选择器
+ * 试图模仿SpringIOC的想法
+ * 将每次查找信息保存在Map中，加快二次查找
+ * 使用Sizzle(jQuery选择器)作为兼容方案
+ * id返回单个对象，其他方式均返回对象数组(可forEach操作)
+ */
 class Spring {
     constructor() {
         this.container = new Map();

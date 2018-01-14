@@ -1,6 +1,11 @@
 import Dom from 'dom';
 import error from 'error';
 
+/**
+ * POJO类，模仿formdata
+ * 用于ajax传输，快速创建对象
+ * 自动根据contentType返回对应的参数值
+ */
 class POJO {
     constructor(form) {
         this.data = new Map();
@@ -9,23 +14,27 @@ class POJO {
             if (typeof (form) === 'string' && JSON.parse(form)) {
                 this.strToMap(form);
                 return;
-            }
-            if (!form instanceof Dom) {
-                error(form + " is not the instance of Dom");
-            } else if (form.tagName.toString().toLowerCase() !== 'form') {
-                error(form + " is not a form");
-            }
-            form.getChildren().forEach((input) => {
-                if (input.getAttr("tagName") === "input" && input.getAttr("type") === "text" || input.getAttr("type") === "password") {
-                    const key = input.getAttr("name");
-                    const value = input.getValue();
-                    if (key && value && key !== '') {
-                        this.data.set(key, value);
+            } else if('object' === typeof (form)) {
+                if(form instanceof Dom) {
+                    if (form.tagName.toString().toLowerCase() !== 'form') {
+                        error(form + " is not a form");
                     }
+                    form.getChildren().forEach((input) => {
+                        if (input.getAttr("tagName") === "input" && input.getAttr("type") === "text" || input.getAttr("type") === "password") {
+                            const key = input.getAttr("name");
+                            const value = input.getValue();
+                            if (key && value && key !== '') {
+                                this.data.set(key, value);
+                            }
+                        }
+                    });
+                } else {
+                    this.strToMap(JSON.stringify(form));
                 }
-            });
+            }
         }
     }
+    //转换contentType类型
     changeType(type) {
         this.type = type;
     }
@@ -35,18 +44,26 @@ class POJO {
     getType(type) {
         return this.type;
     }
+    isEmpty() {
+        return 0 ==this.data.size;
+    }
+    //获取参数
     get(key) {
         if (typeof (key) !== 'string') {
             error(key + " is a string");
         }
         return this.data.get(key);
     }
+    //插入参数
     append(key, value) {
         if (typeof (key) !== 'string') {
             error(key + " is not a string");
         }
         if(null != value && 'string' === typeof(value)) {
             value = value.toString().trim();
+        }
+        if(value instanceof POJO) {
+            value = JSON.parse(value.toString());
         }
         this.data.set(key.trim(), value);
     }
@@ -69,6 +86,7 @@ class POJO {
         }
 
     }
+    //转换为formdata
     getFormData() {
         if (!window.FormData) {
             return null;
@@ -79,6 +97,7 @@ class POJO {
         });
         return fd;
     }
+    //对json字符串自动进行转换
     strToMap(json) {
         const jsonObj = JSON.parse(json);
         for (let key in jsonObj) {

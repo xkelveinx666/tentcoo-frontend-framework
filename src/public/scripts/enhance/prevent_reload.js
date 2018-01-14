@@ -1,3 +1,7 @@
+/**
+ * 禁用刷新
+ */
+
 function disableReload() {
     document.onkeydown = function () {
         if (event.keyCode == 116) {

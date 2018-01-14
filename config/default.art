@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <% include ('../../../public/pages/meta.art') %>
+    {{include '../../../public/pages/meta.art'}}
 </head>
 
 <body ontouchstart>

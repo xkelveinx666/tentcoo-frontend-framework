@@ -1,10 +1,20 @@
 import Dom from 'dom';
 import $ from 'selector';
+
+/**
+ * 错误弹框，用于显示未被捕获的消息
+ * 默认只显示最新的错误
+ * 错误将会有行号，具体信息和错误文件
+ * 快速在没有console的地方发现错误
+ * 高效用于手机调试
+ */
+
 (function () {
     const errorDialog = new Dom('div');
     window.onerror = (message, url, line) => {
+        errorDialog.cleanChildren();
         const p = new Dom('p');
-        p.setValue("页面出现异常，请刷新重试或更换尝试更换浏览器");
+        p.setValue("ERROR:In line " + line + " about " + message + " from " + url);
         errorDialog.addChildTail(p);
         errorDialog.show();
     }

@@ -2,18 +2,14 @@
 a scaffold consist of gulp,webpack,sass,postcss,art-template
 
 ## 版本
-v1.40
-- 完善POJO类对ajax传回对象的对应转换，能自动转为数组，字符串
-- 添加自动扫描添加事件函数
-- 对于添加了select-option,select-label的标签，能快速生成下拉列表
-- 对于添加了show,close属性的标签，能快速打开关闭弹窗
-- 修复IE6下常见ajax问题,增加了不支持函数操作的判断
-- 改善dom操作类的操作细节
-- 使用sizzle作为选择器修复IE6的选择器bug
-- 使用Reset.css代替Bootstrap.reboot
-- 默认不加载jQuery
-- 统一加载ie8fix.js，因为高级版IE仍然不支持部分ES5,ES6操作且IE10,11不支持条件注释
-- 改用yarn
+v1.50
+- 只显示最新的错误，其他都会被删除
+- 添加JSBridge让网页与客户端能进行交互
+- 加入uglifyJS压缩上线的JS代码
+- 抽离common的加载项目，减少无用的加载
+- 默认让IE9-加载IE8fix(IE10+不支持条件注释)
+- 为pulic下的js文件加入注释
+- 预计新开项目不再维护这个框架
 
 ## 说明
 此项目用于天高前端框架的开发，用于将HTML,CSS,JavaScript实现模块化。
@@ -31,6 +27,7 @@ v1.40
 5. dom类，统一化dom的操作方法，集中解决dom操作的兼容性问题，包括事件的兼容
 6. image_preview类，统一化的图像预览方案，绑定input与img。实现直至IE8的本地预览
 7. test_input类，常用的正则表达式操作与校验函数。
+8. 加入uglifyJs压缩js代码，减少体积
 ### ajax
 - 修改Fech转回XHR,能正确设置同步异步
 - ajax传入函数使用POJO类，类似formdata能快速进行参数的打包与发送
@@ -79,6 +76,11 @@ v1.40
 - 发挥了HTML标记的特点快速添加事件
 - 对于添加了select-option,select-label的标签，能快速生成下拉列表
 - 对于添加了show,close属性的标签，能快速打开关闭弹窗
+### JSBridge 
+- 全局对象TentcooJSBridge用于与客户端进行交互
+- 具体使用请看JSBridge.main.js
+- 查看api支持(判断是否旧版本客户端)
+- 支持回调和注册监听模式
 
 ## 如何使用
 1. git clone git@github.com:xkelveinx666/tentcoo-frontend-framework.git

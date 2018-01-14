@@ -1,7 +1,5 @@
-const webpack = global.webpack || require("webpack");
 const common = global.common || require('../config/common_config');
 const entries = global.entries || require('../config/entries_config').entries;
-const path = global.path || require('path');
 const moduleConfig = global.module || require('./module');
 const pluginsConfig = global.pluginConfig || require('./plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
